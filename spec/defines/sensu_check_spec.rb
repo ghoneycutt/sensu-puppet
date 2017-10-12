@@ -6,7 +6,12 @@ describe 'sensu::check', :type => :define do
     include ::sensu
     ENDofPUPPETcode
   end
-  let(:facts) { { :osfamily => 'RedHat' } }
+  let(:facts) do
+    {
+      :osfamily => 'RedHat',
+      :kernel   => 'Linux',
+    }
+  end
 
   let(:title) { 'mycheck' }
   let(:params_base) {{ command: '/etc/sensu/somecommand.rb' }}
@@ -461,4 +466,24 @@ describe 'sensu::check', :type => :define do
     end
   end
 
+  describe 'osfamily Darwin' do
+  let(:facts) do
+    {
+      :osfamily => 'Darwin',
+      :kernel   => 'Darwin',
+      :macosx_productversion_major => '10.12',
+    }
+  end
+
+  context 'defaults' do
+    it { should contain_sensu__write_json(fpath).with(
+      :owner => '_sensu',
+      :group => 'wheel'
+    ) }
+    it { should contain_file(fpath).with(
+      :owner => '_sensu',
+      :group => 'wheel'
+    ) }
+    end
+  end
 end

@@ -1,7 +1,13 @@
 require 'spec_helper'
 
 describe 'sensu', :type => :class do
-  let(:facts) { { :fqdn => 'testhost.domain.com', :osfamily => 'RedHat' } }
+  let(:facts) do
+    {
+      :fqdn     => 'testhost.domain.com',
+      :osfamily => 'RedHat',
+      :kernel   => 'Linux',
+    }
+  end
 
   context 'without api (default)' do
     context 'config' do
@@ -184,4 +190,23 @@ describe 'sensu', :type => :class do
       end # with hasrestart=false
     end # service
   end # with api
+
+  describe 'osfamily Darwin' do
+  let(:facts) do
+    {
+      :osfamily => 'Darwin',
+      :kernel   => 'Darwin',
+      :macosx_productversion_major => '10.12',
+    }
+  end
+  context 'with api true' do
+    let(:params) { { :api => true } }
+    it { should contain_service('org.sensuapp.sensu-api').with(
+      :ensure     => 'running',
+      :enable     => true,
+      :provider   => 'launchd',
+      :path       => '/Library/LaunchDaemons/org.sensuapp.sensu-api.plist'
+    )}
+    end
+  end
 end
