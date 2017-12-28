@@ -41,4 +41,20 @@ describe 'sensu::filter', :type => :define do
     it { should contain_sensu_filter('myfilter').with(:ensure => 'absent') }
   end
 
+  describe 'on osfamily Darwin' do
+  let(:facts) do
+    {
+      :osfamily => 'Darwin',
+      :kernel   => 'Darwin',
+      :macosx_productversion_major => '10.12',
+    }
+  end
+
+  context 'by default' do
+    it { should contain_file('/etc/sensu/conf.d/filters/myfilter.json').with(
+      :owner => '_sensu',
+      :group => 'wheel'
+    ) }
+    end
+  end
 end

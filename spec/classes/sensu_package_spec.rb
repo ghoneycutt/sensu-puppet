@@ -320,7 +320,33 @@ describe 'sensu' do
           it { should_not contain_yumrepo('sensu') }
           it { should contain_package('sensu').with( :require => nil ) }
         end
+      end
 
+      context 'Darwin' do
+        let(:facts) do
+          {
+            :osfamily => 'Darwin',
+            :kernel   => 'Darwin',
+            :macosx_productversion_major => '10.12',
+          }
+        end
+
+        context 'default' do
+        directories.each do |dir|
+          it { should contain_file(dir).with(
+            :ensure  => 'directory',
+            :owner   => '_sensu',
+            :group   => 'wheel',
+          ) }
+        end
+        it { should contain_package('sensu').with({
+          :ensure     => 'present',
+          :source     => '/tmp/sensu-installer.dmg',
+          :provider   => 'pkgdmg',
+          :require    => 'Remote_file[/tmp/sensu-installer.dmg]',
+        }) }
+        it { should contain_file('/etc/default/sensu').with_content('EMBEDDED_RUBY=true') }
+        end
       end
     end
 

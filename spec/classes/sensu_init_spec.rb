@@ -655,4 +655,74 @@ describe 'sensu', :type => :class do
       end # var[:name].each
     end # validations.sort.each
   end # describe 'variable type and content validations'
+
+  describe 'osfamily Darwin' do
+    let(:facts) do
+      {
+        :osfamily => 'Darwin',
+        :kernel   => 'Darwin',
+        :macosx_productversion_major => '10.12',
+      }
+    end
+
+    it 'should compile' do should create_class('sensu') end
+    it { should contain_file('/etc/sensu/conf.d/client.json') }
+    it do
+      should contain_file('/etc/sensu/conf.d/transport.json').with({
+        :ensure => 'present',
+        :owner => '_sensu',
+        :group => 'wheel',
+      })
+    end
+    it do
+      should contain_package('sensu').with({
+        :ensure     => 'present',
+        :source     => '/tmp/sensu-installer.dmg',
+        :provider   => 'pkgdmg',
+        :require    => 'Remote_file[/tmp/sensu-installer.dmg]',
+      })
+    end
+    directories = [ '/etc/sensu/conf.d', '/etc/sensu/conf.d/handlers', '/etc/sensu/conf.d/checks', '/etc/sensu/handlers', '/etc/sensu/extensions', '/etc/sensu/mutators', '/etc/sensu/extensions/handlers', '/etc/sensu/plugins' ]
+    directories.each do |dir|
+      it { should contain_file(dir).with(
+        :ensure  => 'directory',
+        :owner   => '_sensu',
+        :group   => 'wheel',
+      ) }
+    end
+
+    context 'with client true' do
+      let(:params) { { :client => true } }
+      it do
+        should contain_service('sensu-client').with({
+          :ensure     => 'running',
+          :name       => 'org.sensuapp.sensu-client',
+          :enable     => true,
+          :provider   => 'launchd',
+          :path       => '/Library/LaunchDaemons/org.sensuapp.sensu-client.plist',
+        })
+      end
+      it do
+        should contain_file('/Library/LaunchDaemons/org.sensuapp.sensu-client.plist').with({
+          :ensure     => 'file',
+          :owner      => 'root',
+          :group      => 'wheel',
+          :mode       => '0755',
+          :path       => '/Library/LaunchDaemons/org.sensuapp.sensu-client.plist',
+        })
+      end
+    end
+
+    context 'with api true' do
+      let(:params) { { :api => true } }
+      it do
+        should contain_service('org.sensuapp.sensu-api').with({
+          :ensure     => 'running',
+          :enable     => true,
+          :provider   => 'launchd',
+          :path       => '/Library/LaunchDaemons/org.sensuapp.sensu-api.plist'
+        })
+      end
+    end
+  end
 end

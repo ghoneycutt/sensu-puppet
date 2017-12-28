@@ -270,4 +270,31 @@ describe 'sensu', :type => :class do
       end #no client, not managing services
     end # service
   end # without client
+
+  describe 'osfamily Darwin' do
+  let(:facts) do
+    {
+      :osfamily => 'Darwin',
+      :kernel   => 'Darwin',
+      :macosx_productversion_major => '10.12',
+    }
+  end
+  context 'with client true' do
+    let(:params) { { :client => true } }
+    it { should contain_service('sensu-client').with(
+      :ensure     => 'running',
+      :name       => 'org.sensuapp.sensu-client',
+      :enable     => true,
+      :provider   => 'launchd',
+      :path       => '/Library/LaunchDaemons/org.sensuapp.sensu-client.plist'
+    )}
+    it { should contain_file('/Library/LaunchDaemons/org.sensuapp.sensu-client.plist').with(
+      :ensure     => 'file',
+      :owner      => 'root',
+      :group      => 'wheel',
+      :mode       => '0755',
+      :path       => '/Library/LaunchDaemons/org.sensuapp.sensu-client.plist'
+    )}
+    end
+  end
 end

@@ -50,5 +50,18 @@ describe 'sensu' do
         JSON.pretty_generate({'transport' => {'name' => 'rabbitmq', 'reconnect_on_error' => true}})
       )}
     end
+
+    context 'on Darwin' do
+      let(:facts) do
+        {
+          :osfamily => 'Darwin',
+          :kernel   => 'Darwin',
+          :macosx_productversion_major => '10.12',
+        }
+      end
+
+      it { should create_class('sensu::transport') }
+      it { should contain_file('/etc/sensu/conf.d/transport.json').with_ensure('present') }
+    end
   end
 end
