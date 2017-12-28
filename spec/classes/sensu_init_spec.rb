@@ -655,4 +655,29 @@ describe 'sensu', :type => :class do
       end # var[:name].each
     end # validations.sort.each
   end # describe 'variable type and content validations'
+
+  describe 'osfamily Darwin' do
+  let(:facts) do
+    {
+      :osfamily => 'Darwin',
+      :kernel   => 'Darwin',
+      :macosx_productversion_major => '10.12',
+    }
+  end
+  context 'by default' do
+    it 'should compile' do should create_class('sensu') end
+    it { should contain_file('/etc/sensu/conf.d/client.json') }
+    it { should contain_file('/etc/sensu/conf.d/transport.json').with({
+      :ensure => 'present',
+      :owner => '_sensu',
+      :group => 'wheel',
+    }) }
+    it { should contain_package('sensu').with({
+      :ensure     => 'present',
+      :source     => '/tmp/sensu-installer.dmg',
+      :provider   => 'pkgdmg',
+      :require    => 'Remote_file[/tmp/sensu-installer.dmg]',
+    }) }
+    end
+  end
 end
