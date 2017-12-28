@@ -61,7 +61,7 @@ describe 'sensu' do
       end
 
       it { should create_class('sensu::transport') }
-      it { should contain_file('/etc/sensu/conf.d/transport.json') }
+      it { should contain_file('/etc/sensu/conf.d/transport.json').with_ensure('present') }
     end
   end
 end

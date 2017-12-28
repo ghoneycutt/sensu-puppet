@@ -345,6 +345,7 @@ describe 'sensu' do
           :provider   => 'pkgdmg',
           :require    => 'Remote_file[/tmp/sensu-installer.dmg]',
         }) }
+        it { should contain_file('/etc/default/sensu').with_content('EMBEDDED_RUBY=true') }
         end
       end
     end
