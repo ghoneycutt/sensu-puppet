@@ -1009,7 +1009,10 @@ Do not define with license_source</p>
 295
 296
 297
-298</pre>
+298
+299
+300
+301</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 97</span>
@@ -1204,6 +1207,9 @@ class sensu::backend (
     ensure    =&gt; &#39;file&#39;,
     path      =&gt; &quot;${etc_dir}/backend.yml&quot;,
     content   =&gt; to_yaml($config),
+    owner     =&gt; $::sensu::user,
+    group     =&gt; $::sensu::group,
+    mode      =&gt; &#39;0640&#39;,
     show_diff =&gt; $show_diff,
     require   =&gt; Package[&#39;sensu-go-backend&#39;],
     notify    =&gt; Service[&#39;sensu-backend&#39;],

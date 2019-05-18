@@ -263,7 +263,11 @@ Default is OS dependent.</p>
 89
 90
 91
-92</pre>
+92
+93
+94
+95
+96</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/plugins.pp', line 33</span>
@@ -275,6 +279,10 @@ class sensu::plugins (
   Variant[Array, Hash] $plugins = [],
   Variant[Array, Hash] $extensions = [],
 ) {
+
+  if $facts[&#39;os&#39;][&#39;family&#39;] == &#39;windows&#39; {
+    fail(&#39;sensu::plugins is not supported on Windows&#39;)
+  }
 
   include ::sensu
 
