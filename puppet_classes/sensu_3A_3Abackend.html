@@ -6,7 +6,7 @@
 <title>
   Puppet Class: sensu::backend
   
-    &mdash; Documentation by YARD 0.9.19
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
@@ -798,6 +798,23 @@ Do not define with license_source</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>sensuctl_chunk_size</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Chunk size to use when listing sensuctl resources</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -808,8 +825,6 @@ Do not define with license_source</p>
         <pre class="lines">
 
 
-97
-98
 99
 100
 101
@@ -1012,10 +1027,17 @@ Do not define with license_source</p>
 298
 299
 300
-301</pre>
+301
+302
+303
+304
+305
+306
+307
+308</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 97</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 99</span>
 
 class sensu::backend (
   Optional[String] $version = undef,
@@ -1059,6 +1081,7 @@ class sensu::backend (
   Hash $roles = {},
   Hash $silencings = {},
   Hash $users = {},
+  Optional[Integer] $sensuctl_chunk_size = undef,
 ) {
 
   if $license_source and $license_content {
@@ -1116,6 +1139,10 @@ class sensu::backend (
     ensure  =&gt; $_version,
     name    =&gt; $cli_package_name,
     require =&gt; $::sensu::package_require,
+  }
+
+  sensuctl_config { &#39;sensu&#39;:
+    chunk_size =&gt; $sensuctl_chunk_size,
   }
 
   sensu_api_validator { &#39;sensu&#39;:

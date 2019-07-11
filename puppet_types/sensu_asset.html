@@ -6,7 +6,7 @@
 <title>
   Resource Type: sensu_asset
   
-    &mdash; Documentation by YARD 0.9.19
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
@@ -112,7 +112,7 @@
   ensure  =&gt; &#39;present&#39;,
   url     =&gt; &#39;http://example.com/asset/example.tar&#39;,
   sha512  =&gt; &#39;4f926bf4328fbad2b9cac873d117f771914f4b837c9c85584c38ccf55a3ef3c2e8d154812246e5dda4a87450576b2c58ad9ab40c9e2edc31b288d066b195b21b&#39;,
-  filters =&gt; [&#39;System.OS==linux&#39;],
+  filters  =&gt; [&quot;entity.system.os == &#39;linux&#39;&quot;],
 }</code></pre>
     
   </div>
@@ -198,6 +198,20 @@
           
         </ul>
       </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">headers</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          <p>HTTP headers to appy to asset retrieval requests.</p>
+
+        </div>
+      </div>
+      
       
     </li>
     

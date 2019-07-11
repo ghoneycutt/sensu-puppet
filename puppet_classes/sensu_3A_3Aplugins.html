@@ -6,7 +6,7 @@
 <title>
   Puppet Class: sensu::plugins
   
-    &mdash; Documentation by YARD 0.9.19
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
@@ -110,6 +110,24 @@
   
     <li>
       
+        <span class='name'>manage_repo</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Determines if plugin repo should be managed.
+Defaults to value for <code>sensu::manage_repo</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>package_ensure</span>
       
       
@@ -204,9 +222,6 @@ Default is OS dependent.</p>
         <pre class="lines">
 
 
-33
-34
-35
 36
 37
 38
@@ -267,12 +282,19 @@ Default is OS dependent.</p>
 93
 94
 95
-96</pre>
+96
+97
+98
+99
+100
+101
+102</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/plugins.pp', line 33</span>
+        <pre class="code"><span class="info file"># File 'manifests/plugins.pp', line 36</span>
 
 class sensu::plugins (
+  Optional[Boolean] $manage_repo = undef,
   String $package_ensure = &#39;installed&#39;,
   String $package_name = &#39;sensu-plugins-ruby&#39;,
   Array $dependencies = [],
@@ -286,7 +308,9 @@ class sensu::plugins (
 
   include ::sensu
 
-  if $::sensu::manage_repo {
+  $_manage_repo = pick($manage_repo, $::sensu::manage_repo)
+
+  if $_manage_repo {
     include ::sensu::repo::community
     $package_require = [Class[&#39;::sensu::repo::community&#39;]] + $::sensu::os_package_require
   } else {

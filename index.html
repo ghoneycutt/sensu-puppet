@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.19
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
@@ -89,6 +89,7 @@
 <ul>
 <li><a href="#label-Adding+backend+members+to+an+existing+cluster">Adding backend members to an existing cluster</a></li>
 </ul></li>
+<li><a href="#label-Large+environment+considerations">Large Environment Considerations</a></li>
 </ul></li>
 <li><a href="#label-Reference">Reference</a>
 
@@ -526,6 +527,15 @@ sensu::backend::config_hash:
 </code></pre>
 
 <p>The first step will not fully add the node to the cluster until the second step is performed.</p>
+
+<h3>Large Environment Considerations</h3>
+
+<p>If the backend system has a large number of resources it may be necessary to query resources using chunk size added in Sensu Go 5.8.</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;::sensu::backend&#39;:
+  sensuctl_chunk_size =&gt; 100,
+}
+</code></pre>
 
 <h2>Reference</h2>
 
