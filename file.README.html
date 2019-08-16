@@ -90,6 +90,7 @@
 <li><a href="#label-Adding+backend+members+to+an+existing+cluster">Adding backend members to an existing cluster</a></li>
 </ul></li>
 <li><a href="#label-Large+environment+considerations">Large Environment Considerations</a></li>
+<li><a href="#label-Composite+names+for+namespaces">Composite Names for Namespaces</a></li>
 </ul></li>
 <li><a href="#label-Reference">Reference</a>
 
@@ -536,6 +537,34 @@ sensu::backend::config_hash:
   sensuctl_chunk_size =&gt; 100,
 }
 </code></pre>
+
+<h3>Composite Names for Namespaces</h3>
+
+<p>All resources that support having a <code>namespace</code> also support a composite name to define the namespace.</p>
+
+<p>For example, the <code>sensu_check</code> with name <code>check-cpu in team1</code> would be named <code>check-cpu</code> and put into the <code>team1</code> namespace.</p>
+
+<p>Using composite names is necessary if you wish to have multiple resources with the same name but in different namespaces.</p>
+
+<p>For example to define the same check in two namespaces using the same check name:</p>
+
+<pre class="code puppet"><code class="puppet">sensu_check { &#39;check-cpu in default&#39;:
+  ensure        =&gt; &#39;present&#39;,
+  command       =&gt; &#39;check-cpu.sh -w 75 -c 90&#39;,
+  interval      =&gt; 60,
+  subscriptions =&gt; [&#39;linux&#39;],
+}
+sensu_check { &#39;check-cpu in team1&#39;:
+  ensure        =&gt; &#39;present&#39;,
+  command       =&gt; &#39;check-cpu.sh -w 75 -c 90&#39;,
+  interval      =&gt; 60,
+  subscriptions =&gt; [&#39;linux&#39;],
+}
+</code></pre>
+
+<p>The example above would add the <code>check-cpu</code> check to both the <code>default</code> and <code>team1</code> namespaces.</p>
+
+<p><strong>NOTE:</strong> If you use composite names for namespaces, the <code>namespace</code> property takes precedence.</p>
 
 <h2>Reference</h2>
 
