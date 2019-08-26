@@ -815,6 +815,177 @@ Do not define with license_source</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>datastore</span>
+      
+      
+        <span class='type'>(<tt>Optional[Enum['postgresql']]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Datastore to configure for sensu events</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>datastore_ensure</span>
+      
+      
+        <span class='type'>(<tt>Enum['present','absent']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;present&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The datastore ensure property. If set to <code>absent</code> all
+datastore parameters must still be defined.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_postgresql_db</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Boolean that sets of postgresql database should be managed</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;postgresql&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Name of PostgresConfig that is configured with sensuctl</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_user</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;sensu&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The PostgreSQL database user</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;changeme&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The PostgreSQL database password</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_host</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Host</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;localhost&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The PostgreSQL host</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_port</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Port</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>5432</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The PostgreSQL port</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_dbname</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;sensu&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The name of the PostgreSQL database</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_pool_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>20</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The PostgreSQL pool size</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -825,27 +996,6 @@ Do not define with license_source</p>
         <pre class="lines">
 
 
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
 120
 121
 122
@@ -1034,10 +1184,44 @@ Do not define with license_source</p>
 305
 306
 307
-308</pre>
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 99</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 120</span>
 
 class sensu::backend (
   Optional[String] $version = undef,
@@ -1082,6 +1266,16 @@ class sensu::backend (
   Hash $silencings = {},
   Hash $users = {},
   Optional[Integer] $sensuctl_chunk_size = undef,
+  Optional[Enum[&#39;postgresql&#39;]] $datastore = undef,
+  Enum[&#39;present&#39;,&#39;absent&#39;] $datastore_ensure = &#39;present&#39;,
+  Boolean $manage_postgresql_db = true,
+  String $postgresql_name = &#39;postgresql&#39;,
+  String $postgresql_user = &#39;sensu&#39;,
+  String $postgresql_password = &#39;changeme&#39;,
+  Stdlib::Host $postgresql_host = &#39;localhost&#39;,
+  Stdlib::Port $postgresql_port = 5432,
+  String $postgresql_dbname = &#39;sensu&#39;,
+  Integer $postgresql_pool_size = 20,
 ) {
 
   if $license_source and $license_content {
@@ -1092,6 +1286,9 @@ class sensu::backend (
   include ::sensu::backend::resources
   if $manage_tessen {
     include ::sensu::backend::tessen
+  }
+  if $datastore == &#39;postgresql&#39; {
+    include ::sensu::backend::datastore::postgresql
   }
 
   $etc_dir = $::sensu::etc_dir

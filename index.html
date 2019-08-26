@@ -79,6 +79,7 @@
 <li><a href="#label-Advanced+agent">Advanced agent</a></li>
 <li><a href="#label-Advanced+ssl">Advanced SSL</a></li>
 <li><a href="#label-Enterprise+support">Enterprise support</a></li>
+<li><a href="#label-Postgresql+datastore+support">PostgreSQL datastore support</a></li>
 <li><a href="#label-Installing+plugins">Installing Plugins</a></li>
 <li><a href="#label-Installing+extensions">Installing Extensions</a></li>
 <li><a href="#label-Exported+resources">Exported resources</a></li>
@@ -145,11 +146,13 @@ Please log an issue if you identify any incompatibilities.</p>
 
 <p>Plugin sync is required if the custom sensu types and providers are used.</p>
 
-<p>This module has a soft dependency on the <a href="https://forge.puppet.com/puppetlabs/apt">puppetlabs/apt</a> module (<code>&gt;= 5.0.1 &lt; 7.0.0</code>) for systems using <code>apt</code>.</p>
+<p>This module has a soft dependency on the <a href="https://forge.puppet.com/puppetlabs/apt">puppetlabs/apt</a> module (<code>&gt;= 5.0.1 &lt; 8.0.0</code>) for systems using <code>apt</code>.</p>
 
 <p>If using Puppet &gt;= 6.0.0 there is a soft dependency on the <a href="https://forge.puppet.com/puppetlabs/yumrepo_core">puppetlabs/yumrepo_core</a> module (<code>&gt;= 1.0.1 &lt; 2.0.0</code>) for systems using <code>yum</code>.</p>
 
-<p>If managing Windows there is a soft dependency on the <a href="https://forge.puppet.com/puppet/archive">puppet/archive</a> module (<code>&gt;= 3.0.0 &lt; 4.0.0</code>).</p>
+<p>If managing Windows there is a soft dependency on the <a href="https://forge.puppet.com/puppet/archive">puppet/archive</a> module (<code>&gt;= 3.0.0 &lt; 5.0.0</code>).</p>
+
+<p>For PostgreSQL datastore support there is a soft dependency on <a href="https://forge.puppet.com/puppetlabs/postgresql">puppetlabs/postgresql</a> module (<code>&gt;= 6.0.0 &lt; 7.0.0</code>).</p>
 
 <h3>Beginning with sensu</h3>
 
@@ -289,7 +292,38 @@ class { &#39;sensu::agent&#39;:
 }
 </code></pre>
 
-<p>The type <code>sensu_ldap_auth</code> requires a valid enterprise license.</p>
+<p>The types <code>sensu_ad_auth</code> and <code>sensu_ldap_auth</code> require a valid enterprise license.</p>
+
+<h3>PostgreSQL datastore support</h3>
+
+<p><strong>NOTE</strong>: This features require a valid Sensu Go enterprise license.</p>
+
+<p>The following example will add a PostgreSQL server and database to the sensu-backend host and configure Sensu Go to use PostgreSQL as the event datastore.</p>
+
+<pre class="code puppet"><code class="puppet">class { &#39;postgresql::globals&#39;:
+  manage_package_repo =&gt; true,
+  version             =&gt; &#39;9.6&#39;,
+}
+class { &#39;postgresql::server&#39;: }
+class { &#39;::sensu::backend&#39;:
+  license_source      =&gt; &#39;puppet:///modules/profile/sensu/license.json&#39;,
+  datastore           =&gt; &#39;postgresql&#39;,
+  postgresql_password =&gt; &#39;secret&#39;,
+}
+</code></pre>
+
+<p>Refer to the <a href="https://forge.puppet.com/puppetlabs/postgresql">puppetlabs/postgresql</a> module documentation for details on how to manage PostgreSQL with Puppet.</p>
+
+<p>The following example uses an external PostgreSQL server.</p>
+
+<pre class="code puppet"><code class="puppet">class { &#39;::sensu::backend&#39;:
+  license_source       =&gt; &#39;puppet:///modules/profile/sensu/license.json&#39;,
+  datastore            =&gt; &#39;postgresql&#39;,
+  postgresql_password  =&gt; &#39;secret&#39;,
+  postgresql_host      =&gt; &#39;postgresql.example.com&#39;,
+  manage_postgresql_db =&gt; false,
+}
+</code></pre>
 
 <h3>Installing Plugins</h3>
 
@@ -640,6 +674,7 @@ Linux.</p>
 <li>EL 7</li>
 <li>Debian 8</li>
 <li>Debian 9</li>
+<li>Debian 10 (Puppet 6 only)</li>
 <li>Ubuntu 16.04 LTS</li>
 <li>Ubuntu 18.04 LTS</li>
 <li>Amazon 2018.03</li>
