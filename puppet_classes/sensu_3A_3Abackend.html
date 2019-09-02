@@ -732,6 +732,23 @@ Do not define with license_source</p>
   
     <li>
       
+        <span class='name'>oidc_auths</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Hash of sensu_oidc_auth resources</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>role_bindings</span>
       
       
@@ -996,8 +1013,6 @@ datastore parameters must still be defined.</p>
         <pre class="lines">
 
 
-120
-121
 122
 123
 124
@@ -1218,10 +1233,13 @@ datastore parameters must still be defined.</p>
 339
 340
 341
-342</pre>
+342
+343
+344
+345</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 120</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 122</span>
 
 class sensu::backend (
   Optional[String] $version = undef,
@@ -1261,6 +1279,7 @@ class sensu::backend (
   Hash $ldap_auths = {},
   Hash $mutators = {},
   Hash $namespaces = {},
+  Hash $oidc_auths = {},
   Hash $role_bindings = {},
   Hash $roles = {},
   Hash $silencings = {},

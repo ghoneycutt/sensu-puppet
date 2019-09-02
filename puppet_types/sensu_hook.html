@@ -93,6 +93,7 @@
 <li><code>Sensu_configure[puppet]</code></li>
 <li><code>Sensu_api_validator[sensu]</code></li>
 <li><code>sensu_namespace</code> - Puppet will autorequire <code>sensu_namespace</code> resource defined in <code>namespace</code> property.</li>
+<li><code>sensu_asset</code> - Puppet will autorequire <code>sensu_asset</code> resources defined in <code>runtime_assets</code> property.</li>
 </ul>
 
   </div>
@@ -218,6 +219,37 @@
         </div>
       </div>
       
+      
+    </li>
+    
+    <li>
+      <span class="name">runtime_assets</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          <p>An array of Sensu assets (names), required at runtime for the execution of the command</p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            /.*/
+          </li>
+          
+          <li>
+            
+            absent
+          </li>
+          
+        </ul>
+      </div>
       
     </li>
     

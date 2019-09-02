@@ -189,7 +189,12 @@
 98
 99
 100
-101</pre>
+101
+102
+103
+104
+105
+106</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/resources.pp', line 4</span>
@@ -269,6 +274,11 @@ class sensu::backend::resources {
   $::sensu::backend::namespaces.each |$name, $namespace| {
     sensu_namespace { $name:
       * =&gt; $namespace,
+    }
+  }
+  $::sensu::backend::oidc_auths.each |$name, $oidc_auth| {
+    sensu_oidc_auth { $name:
+      * =&gt; $oidc_auth,
     }
   }
   $::sensu::backend::role_bindings.each |$name, $role_binding| {
