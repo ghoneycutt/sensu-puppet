@@ -194,7 +194,12 @@
 103
 104
 105
-106</pre>
+106
+107
+108
+109
+110
+111</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/resources.pp', line 4</span>
@@ -209,6 +214,11 @@ class sensu::backend::resources {
   $::sensu::backend::assets.each |$name, $asset| {
     sensu_asset { $name:
       * =&gt; $asset,
+    }
+  }
+  $::sensu::backend::bonsai_assets.each |$name, $bonsai_asset| {
+    sensu_bonsai_asset { $name:
+      * =&gt; $bonsai_asset,
     }
   }
   $::sensu::backend::checks.each |$name, $check| {

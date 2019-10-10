@@ -92,6 +92,7 @@
 </ul></li>
 <li><a href="#label-Large+environment+considerations">Large Environment Considerations</a></li>
 <li><a href="#label-Composite+names+for+namespaces">Composite Names for Namespaces</a></li>
+<li><a href="#label-Installing+bonsai+assets">Installing Bonsai Assets</a></li>
 </ul></li>
 <li><a href="#label-Reference">Reference</a>
 
@@ -150,7 +151,9 @@ Please log an issue if you identify any incompatibilities.</p>
 
 <p>If using Puppet &gt;= 6.0.0 there is a soft dependency on the <a href="https://forge.puppet.com/puppetlabs/yumrepo_core">puppetlabs/yumrepo_core</a> module (<code>&gt;= 1.0.1 &lt; 2.0.0</code>) for systems using <code>yum</code>.</p>
 
-<p>If managing Windows there is a soft dependency on the <a href="https://forge.puppet.com/puppet/archive">puppet/archive</a> module (<code>&gt;= 3.0.0 &lt; 5.0.0</code>).</p>
+<p>If managing Windows there is a soft dependency on the <a href="https://forge.puppet.com/puppetlabs/chocolatey">puppetlabs/chocolatey</a> module (<code>&gt;= 3.0.0 &lt; 5.0.0</code>).</p>
+
+<p>If managing Windows and defining <code>package_source</code>, there is a soft dependency on the <a href="https://forge.puppet.com/puppet/archive">puppet/archive</a> module (<code>&gt;= 3.0.0 &lt; 5.0.0</code>).</p>
 
 <p>For PostgreSQL datastore support there is a soft dependency on <a href="https://forge.puppet.com/puppetlabs/postgresql">puppetlabs/postgresql</a> module (<code>&gt;= 6.0.0 &lt; 7.0.0</code>).</p>
 
@@ -206,20 +209,30 @@ associated to <code>linux</code> and <code>apache-servers</code> subscriptions.<
 
 <h3>Manage Windows Agent</h3>
 
-<p>This module supports Windows Sensu Go agent starting with version 5.7.0.</p>
+<p>This module supports Windows Sensu Go agent via chocolatey beginning with version 5.12.0.</p>
 
-<p>The Windows package source must be specified as either a URL, a Puppet source or a filesystem path.</p>
+<pre class="code puppet"><code class="puppet">class { &#39;sensu::agent&#39;:
+  backends    =&gt; [&#39;sensu-backend.example.com:8081&#39;],
+  config_hash =&gt; {
+    &#39;subscriptions&#39; =&gt; [&#39;windows&#39;],
+  },
+}
+</code></pre>
+
+<p>If you do not wish to install using chocolatey then you must define <code>package_source</code> as either a URL, a Puppet source or a filesystem path.</p>
 
 <p>Install sensu-go-agent on Windows from URL:</p>
 
 <pre class="code puppet"><code class="puppet">class { &#39;sensu::agent&#39;:
-  package_source =&gt; &#39;https://s3-us-west-2.amazonaws.com/sensu.io/sensu-go/5.7.0/sensu-go-agent_5.7.0.2380_en-US.x64.msi&#39;,
+  package_name   =&gt; &#39;Sensu Agent&#39;,
+  package_source =&gt; &#39;https://s3-us-west-2.amazonaws.com/sensu.io/sensu-go/5.13.1/sensu-go-agent_5.13.1.5957_en-US.x64.msi&#39;,
 }
 </code></pre>
 
 <p>Install sensu-go-agent on Windows from Puppet source:</p>
 
 <pre class="code puppet"><code class="puppet">class { &#39;sensu::agent&#39;:
+  package_name   =&gt; &#39;Sensu Agent&#39;,
   package_source =&gt; &#39;puppet:///modules/profile/sensu/sensu-go-agent.msi&#39;,
 }
 </code></pre>
@@ -227,6 +240,7 @@ associated to <code>linux</code> and <code>apache-servers</code> subscriptions.<
 <p>If a system already has the necessary MSI present it can be installed without downloading from an URL:</p>
 
 <pre class="code puppet"><code class="puppet">class { &#39;sensu::agent&#39;:
+  package_name   =&gt; &#39;Sensu Agent&#39;,
   package_source =&gt; &#39;C:\Temp\sensu-go-agent.msi&#39;,
 }
 </code></pre>
@@ -364,6 +378,14 @@ class { &#39;::sensu::backend&#39;:
   }
 </code></pre>
 
+<p>If gems are required and not pulled in as gem dependencies they can also be installed.</p>
+
+<pre class="code puppet"><code class="puppet">class { &#39;sensu::plugins&#39;:
+  plugins          =&gt; [&#39;memory-checks&#39;],
+  gem_dependencies =&gt; [&#39;vmstat&#39;],
+}
+</code></pre>
+
 <p>You can uninstall plugins by passing <code>ensure</code> as <code>absent</code>.</p>
 
 <pre class="code puppet"><code class="puppet">  class { &#39;sensu::agent&#39;:
@@ -495,8 +517,16 @@ sensu::backend::checks:
 <h3>Resource purging</h3>
 
 <p>All the types provided by this module support purging except <code>sensu_config</code>.
-At this time <code>sensu_asset</code> can not be purged, see <a href="#label-Limitations">Limitations</a>.
 This example will remove all unmanaged Sensu checks:</p>
+
+<pre class="code puppet"><code class="puppet">sensu_resources { &#39;sensu_check&#39;:
+  purge =&gt; true,
+}
+</code></pre>
+
+<p><strong>NOTE</strong>: The Puppet built-in <code>resources</code> can also be used for purging but you must ensure that resources that support namespaces are defined using composite names in the form of <code>$name in $namespace</code>. See <a href="#label-Composite+names+for+namespaces">Composite Names for Namespaces</a> for details on composite names.</p>
+
+<p>Using the Puppet built-in <code>resources</code> would look like this:</p>
 
 <pre class="code puppet"><code class="puppet">resources { &#39;sensu_check&#39;:
   purge =&gt; true,
@@ -600,6 +630,31 @@ sensu_check { &#39;check-cpu in team1&#39;:
 
 <p><strong>NOTE:</strong> If you use composite names for namespaces, the <code>namespace</code> property takes precedence.</p>
 
+<h3>Installing Bonsai Assets</h3>
+
+<p>Install a bonsai asset. The latest version will be installed but not automatically upgraded.</p>
+
+<pre class="code puppet"><code class="puppet">sensu_bonsai_asset { &#39;sensu/sensu-pagerduty-handler&#39;:
+  ensure  =&gt; &#39;present&#39;,
+}
+</code></pre>
+
+<p>Install specific version of a bonsai asset.</p>
+
+<pre class="code puppet"><code class="puppet">sensu_bonsai_asset { &#39;sensu/sensu-pagerduty-handler&#39;:
+  ensure  =&gt; &#39;present&#39;,
+  version =&gt; &#39;1.2.0&#39;,
+}
+</code></pre>
+
+<p>Install latest version of a bonsai asset. Puppet will update the Bonsai asset if a new version is released.</p>
+
+<pre class="code puppet"><code class="puppet">sensu_bonsai_asset { &#39;sensu/sensu-pagerduty-handler&#39;:
+  ensure  =&gt; &#39;present&#39;,
+  version =&gt; &#39;latest&#39;,
+}
+</code></pre>
+
 <h2>Reference</h2>
 
 <h3>Facts</h3>
@@ -644,8 +699,6 @@ sensu_check { &#39;check-cpu in team1&#39;:
 
 <p>The Sensu v2 support is designed so that all resources managed by <code>sensuctl</code> are defined on the <code>sensu-backend</code> host.
 This module does not support adding <code>sensuctl</code> resources on a host other than the <code>sensu-backend</code> host.</p>
-
-<p>The type <code>sensu_asset</code> does not at this time support <code>ensure =&gt; absent</code> due to a limitation with sensuctl, see <a href="https://github.com/sensu/sensu-go/issues/988">sensu-go#988</a>.</p>
 
 <p>The type <code>sensu_user</code> does not at this time support <code>ensure =&gt; absent</code> due to a limitation with sensuctl, see <a href="https://github.com/sensu/sensu-go/issues/2540">sensu-go#2540</a>.</p>
 

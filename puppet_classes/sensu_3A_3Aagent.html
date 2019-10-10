@@ -412,7 +412,16 @@ Defaults to <code>C:\ProgramData\sensu\log\sensu-agent.log</code></p>
 148
 149
 150
-151</pre>
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/agent.pp', line 44</span>
@@ -473,6 +482,7 @@ class sensu::agent (
       ],
     }
     if $package_source and ($package_source =~ Stdlib::HTTPSUrl or $package_source =~ Stdlib::HTTPUrl) {
+      $package_provider = undef
       $package_source_basename = basename($package_source)
       $_package_source = &quot;${package_download_path}\\${package_source_basename}&quot;
       archive { &#39;sensu-go-agent.msi&#39;:
@@ -483,6 +493,7 @@ class sensu::agent (
         before  =&gt; Package[&#39;sensu-go-agent&#39;],
       }
     } elsif $package_source and $package_source =~ /^puppet:/ {
+      $package_provider = undef
       $package_source_basename = basename($package_source)
       $_package_source = &quot;${package_download_path}\\${package_source_basename}&quot;
       file { &#39;sensu-go-agent.msi&#39;:
@@ -491,19 +502,26 @@ class sensu::agent (
         source =&gt; $package_source,
         before =&gt; Package[&#39;sensu-go-agent&#39;],
       }
+    } elsif $package_source {
+        $package_provider = undef
+        $_package_source = $package_source
     } else {
+      include ::chocolatey
+      $package_provider = &#39;chocolatey&#39;
       $_package_source = $package_source
     }
   } else {
+    $package_provider = undef
     $_package_source = undef
   }
 
   package { &#39;sensu-go-agent&#39;:
-    ensure  =&gt; $_version,
-    name    =&gt; $package_name,
-    source  =&gt; $_package_source,
-    before  =&gt; File[&#39;sensu_etc_dir&#39;],
-    require =&gt; $::sensu::package_require,
+    ensure   =&gt; $_version,
+    name     =&gt; $package_name,
+    source   =&gt; $_package_source,
+    provider =&gt; $package_provider,
+    before   =&gt; File[&#39;sensu_etc_dir&#39;],
+    require  =&gt; $::sensu::package_require,
   }
 
   file { &#39;sensu_agent_config&#39;:

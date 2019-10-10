@@ -511,6 +511,23 @@ Do not define with license_source</p>
   
     <li>
       
+        <span class='name'>bonsai_assets</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Hash of sensu_bonsai_asset resources</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>checks</span>
       
       
@@ -1013,8 +1030,6 @@ datastore parameters must still be defined.</p>
         <pre class="lines">
 
 
-122
-123
 124
 125
 126
@@ -1236,10 +1251,13 @@ datastore parameters must still be defined.</p>
 342
 343
 344
-345</pre>
+345
+346
+347
+348</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 122</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 124</span>
 
 class sensu::backend (
   Optional[String] $version = undef,
@@ -1266,6 +1284,7 @@ class sensu::backend (
   Enum[&#39;present&#39;,&#39;absent&#39;] $tessen_ensure = &#39;present&#39;,
   Hash $ad_auths = {},
   Hash $assets = {},
+  Hash $bonsai_assets = {},
   Hash $checks = {},
   Hash $cluster_members = {},
   Hash $cluster_role_bindings = {},

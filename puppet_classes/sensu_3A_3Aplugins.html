@@ -180,6 +180,23 @@ Default is OS dependent.</p>
   
     <li>
       
+        <span class='name'>gem_dependencies</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Gem dependencies.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>plugins</span>
       
       
@@ -222,8 +239,6 @@ Default is OS dependent.</p>
         <pre class="lines">
 
 
-36
-37
 38
 39
 40
@@ -288,16 +303,21 @@ Default is OS dependent.</p>
 99
 100
 101
-102</pre>
+102
+103
+104
+105
+106</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/plugins.pp', line 36</span>
+        <pre class="code"><span class="info file"># File 'manifests/plugins.pp', line 38</span>
 
 class sensu::plugins (
   Optional[Boolean] $manage_repo = undef,
   String $package_ensure = &#39;installed&#39;,
   String $package_name = &#39;sensu-plugins-ruby&#39;,
   Array $dependencies = [],
+  Array $gem_dependencies = [],
   Variant[Array, Hash] $plugins = [],
   Variant[Array, Hash] $extensions = [],
 ) {
@@ -327,6 +347,7 @@ class sensu::plugins (
   $dependencies.each |$package| {
     Package[$package] -&gt; Sensu_plugin &lt;| |&gt; # lint:ignore:spaceship_operator_without_tag
   }
+  ensure_packages($gem_dependencies, {&#39;provider&#39; =&gt; &#39;sensu_gem&#39;, &#39;require&#39; =&gt; [Package[$dependencies],Package[&#39;sensu-plugins-ruby&#39;]]})
 
   if $plugins =~ Array {
     $plugins.each |$plugin| {
