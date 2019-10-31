@@ -105,28 +105,6 @@
     <p class="tag_title">Examples:</p>
     
       
-        <p class="example_title"><div class='inline'><p>Create an asset</p>
-</div></p>
-      
-      <pre class="example code"><code>sensu_asset { &#39;test&#39;:
-  ensure  =&gt; &#39;present&#39;,
-  url     =&gt; &#39;http://example.com/asset/example.tar&#39;,
-  sha512  =&gt; &#39;4f926bf4328fbad2b9cac873d117f771914f4b837c9c85584c38ccf55a3ef3c2e8d154812246e5dda4a87450576b2c58ad9ab40c9e2edc31b288d066b195b21b&#39;,
-  filters  =&gt; [&quot;entity.system.os == &#39;linux&#39;&quot;],
-}</code></pre>
-    
-      
-        <p class="example_title"><div class='inline'><p>Create an asset with namespace <code>dev</code> in the name</p>
-</div></p>
-      
-      <pre class="example code"><code>sensu_asset { &#39;test in dev&#39;:
-  ensure  =&gt; &#39;present&#39;,
-  url     =&gt; &#39;http://example.com/asset/example.tar&#39;,
-  sha512  =&gt; &#39;4f926bf4328fbad2b9cac873d117f771914f4b837c9c85584c38ccf55a3ef3c2e8d154812246e5dda4a87450576b2c58ad9ab40c9e2edc31b288d066b195b21b&#39;,
-  filters  =&gt; [&quot;entity.system.os == &#39;linux&#39;&quot;],
-}</code></pre>
-    
-      
         <p class="example_title"><div class='inline'><p>Create an asset with multiple builds</p>
 </div></p>
       
@@ -139,7 +117,11 @@
       &quot;filters&quot; =&gt; [
         &quot;entity.system.os == &#39;linux&#39;&quot;,
         &quot;entity.system.arch == &#39;amd64&#39;&quot;
-      ]
+      ],
+      &quot;headers&quot; =&gt; {
+        &quot;Authorization&quot; =&gt; &quot;Bearer $TOKEN&quot;,
+        &quot;X-Forwarded-For&quot; =&gt; &quot;client1, proxy1, proxy2&quot;,
+      }
     },
     {
       &quot;url&quot; =&gt; &quot;https://assets.bonsai.sensu.io/981307deb10ebf1f1433a80da5504c3c53d5c44f/sensu-go-cpu-check_0.0.3_linux_armv7.tar.gz&quot;,
@@ -148,7 +130,11 @@
         &quot;entity.system.os == &#39;linux&#39;&quot;,
         &quot;entity.system.arch == &#39;arm&#39;&quot;,
         &quot;entity.system.arm_version == 7&quot;
-      ]
+      ],
+      &quot;headers&quot; =&gt; {
+        &quot;Authorization&quot; =&gt; &quot;Bearer $TOKEN&quot;,
+        &quot;X-Forwarded-For&quot; =&gt; &quot;client1, proxy1, proxy2&quot;,
+      }
     },
     {
       &quot;url&quot; =&gt; &quot;https://assets.bonsai.sensu.io/981307deb10ebf1f1433a80da5504c3c53d5c44f/sensu-go-cpu-check_0.0.3_windows_amd64.tar.gz&quot;,
@@ -156,7 +142,11 @@
       &quot;filters&quot; =&gt; [
         &quot;entity.system.os == &#39;windows&#39;&quot;,
         &quot;entity.system.arch == &#39;amd64&#39;&quot;
-      ]
+      ],
+      &quot;headers&quot; =&gt; {
+        &quot;Authorization&quot; =&gt; &quot;Bearer $TOKEN&quot;,
+        &quot;X-Forwarded-For&quot; =&gt; &quot;client1, proxy1, proxy2&quot;,
+      }
     }
   ],
 }</code></pre>
