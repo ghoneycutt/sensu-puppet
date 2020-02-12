@@ -82,7 +82,9 @@
 <h2>Overview</h2>
 <div class="docstring">
   <div class="discussion">
-    <p>Verify that a connection can be successfully established between a node
+    <p><strong>NOTE</strong> This is a private type not intended to be used directly.</p>
+
+<p>Verify that a connection can be successfully established between a node
 and the sensu-backend server.  Its primary use is as a precondition to
 prevent configuration changes from being applied if the sensu_backend
 server cannot be reached, but it could potentially be used for other
@@ -204,7 +206,7 @@ purposes such as monitoring.</p>
     <li>
       <span class="name">test_url</span>
       
-      <span class="default"> (defaults to: <em>/health</em>)</span>
+      <span class="default"> (defaults to: <em>/version</em>)</span>
       
       
       <div class="docstring">
