@@ -6,15 +6,15 @@
 <title>
   Puppet Class: sensu::agent
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::sensu::agent";
   relpath = '../';
 </script>
@@ -426,6 +426,7 @@ Defaults to <code>C:\ProgramData\sensu\log\sensu-agent.log</code></p>
 </ul>
 
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -600,7 +601,18 @@ Defaults to <code>C:\ProgramData\sensu\log\sensu-agent.log</code></p>
 231
 232
 233
-234</pre>
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/agent.pp', line 67</span>
@@ -650,7 +662,7 @@ class sensu::agent (
       &quot;${backend_protocol}://${backend}&quot;
     }
   }
-  $default_config = delete_undef_values({
+  $default_config = {
     &#39;backend-url&#39;   =&gt; $backend_urls,
     &#39;name&#39;          =&gt; $entity_name,
     &#39;subscriptions&#39; =&gt; $subscriptions,
@@ -658,8 +670,8 @@ class sensu::agent (
     &#39;labels&#39;        =&gt; $labels,
     &#39;namespace&#39;     =&gt; $namespace,
     &#39;password&#39;      =&gt; $sensu::agent_password,
-  })
-  $config = $default_config + $ssl_config + $config_hash
+  }
+  $config = filter($default_config + $ssl_config + $config_hash) |$key, $value| { $value =~ NotUndef }
   $_service_env_vars = $service_env_vars.map |$key,$value| {
     &quot;${key}=\&quot;${value}\&quot;&quot;
   }
@@ -728,10 +740,21 @@ class sensu::agent (
     notify   =&gt; Service[&#39;sensu-agent&#39;],
   }
 
+  datacat_collector { &#39;sensu_agent_config&#39;:
+    template_body   =&gt; &#39;&lt;%= @data.to_yaml %&gt;&#39;,
+    target_resource =&gt; File[&#39;sensu_agent_config&#39;],
+    target_field    =&gt; &#39;content&#39;,
+  }
+
+  datacat_fragment { &#39;sensu_agent_config-main&#39;:
+    target =&gt; &#39;sensu_agent_config&#39;,
+    data   =&gt; $config,
+    order  =&gt; &#39;01&#39;,
+  }
+
   file { &#39;sensu_agent_config&#39;:
     ensure    =&gt; &#39;file&#39;,
     path      =&gt; $sensu::agent_config_path,
-    content   =&gt; to_yaml($config),
     owner     =&gt; $sensu::sensu_user,
     group     =&gt; $sensu::sensu_group,
     mode      =&gt; $sensu::file_mode,

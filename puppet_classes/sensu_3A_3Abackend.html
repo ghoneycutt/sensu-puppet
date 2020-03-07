@@ -6,15 +6,15 @@
 <title>
   Puppet Class: sensu::backend
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::sensu::backend";
   relpath = '../';
 </script>
@@ -639,6 +639,7 @@ datastore parameters must still be defined.</p>
 </ul>
 
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -866,9 +867,7 @@ datastore parameters must still be defined.</p>
 302
 303
 304
-305
-306
-307</pre>
+305</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 85</span>
@@ -1008,14 +1007,12 @@ class sensu::backend (
       group     =&gt; $sensu::group,
       mode      =&gt; &#39;0600&#39;,
       show_diff =&gt; false,
-      notify    =&gt; Exec[&#39;sensu-add-license&#39;],
+      notify    =&gt; Sensu_license[&#39;puppet&#39;],
     }
 
-    exec { &#39;sensu-add-license&#39;:
-      path        =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
-      command     =&gt; &quot;sensuctl create --file ${sensu::etc_dir}/license.json&quot;,
-      refreshonly =&gt; true,
-      require     =&gt; Sensuctl_configure[&#39;puppet&#39;],
+    sensu_license { &#39;puppet&#39;:
+      ensure =&gt; &#39;present&#39;,
+      file   =&gt; &quot;${sensu::etc_dir}/license.json&quot;,
     }
   }
 

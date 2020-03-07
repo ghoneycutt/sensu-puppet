@@ -6,15 +6,15 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "";
   relpath = '';
 </script>
@@ -84,6 +84,7 @@
 <li><a href="#label-Api+providers">API Providers</a></li>
 <li><a href="#label-Manage+windows+agent">Manage Windows Agent</a></li>
 <li><a href="#label-Advanced+agent">Advanced agent</a></li>
+<li><a href="#label-Advanced+agent+++subscriptions">Advanced agent - Subscriptions</a></li>
 <li><a href="#label-Advanced+ssl">Advanced SSL</a></li>
 <li><a href="#label-Enterprise+support">Enterprise support</a></li>
 <li><a href="#label-Contact+routing">Contact routing</a></li>
@@ -453,6 +454,22 @@ class { &#39;sensu::agent&#39;:
   show_diff   =&gt; false,
 }
 </code></pre>
+
+<h3>Advanced agent - Subscriptions</h3>
+
+<p>It&#39;s possible to define subscriptions in many locations and the values merged into <code>agent.yml</code>:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;sensu::agent&#39;:
+  subscriptions =&gt; [&#39;base&#39;],
+}
+</code></pre>
+
+<p>Then in a profile class for Apache you could define the following:</p>
+
+<pre class="code ruby"><code class="ruby">sensu::agent::subscription { &#39;apache&#39;: }
+</code></pre>
+
+<p>The resulting <code>agent.yml</code> would contain subscriptions for both <code>base</code> and <code>apache</code>.</p>
 
 <h3>Advanced SSL</h3>
 
@@ -998,39 +1015,39 @@ sensu_check { &#39;check-cpu in team1&#39;:
 
 <p><strong>sensu::agent_event</strong>: Create a Sensu Go agent event via the agent API</p>
 
-<p>Example: <code>bolt task run sensu::agent_event name=bolttest status=1 output=test --nodes sensu_agent</code></p>
+<p>Example: <code>bolt task run sensu::agent_event name=bolttest status=1 output=test --targets sensu_agent</code></p>
 
 <p><strong>sensu::apikey</strong>: Manage Sensu Go API keys</p>
 
-<p>Example: <code>bolt task run sensu::apikey action=create username=foobar --nodes sensu_backend</code>
-Example: <code>bolt task run sensu::apikey action=list --nodes sensu_backend</code>
-Example: <code>bolt task run sensu::apikey action=delete key=replace-with-uuid-key --nodes sensu_backend</code></p>
+<p>Example: <code>bolt task run sensu::apikey action=create username=foobar --targets sensu_backend</code>
+Example: <code>bolt task run sensu::apikey action=list --targets sensu_backend</code>
+Example: <code>bolt task run sensu::apikey action=delete key=replace-with-uuid-key --targets sensu_backend</code></p>
 
 <p><strong>sensu::assets_outdated</strong>: Retreive outdated Sensu Go assets</p>
 
-<p>Example: <code>bolt task run sensu::assets_outdated --nodes sensu_backend</code></p>
+<p>Example: <code>bolt task run sensu::assets_outdated --targets sensu_backend</code></p>
 
 <p><strong>sensu::check_execute</strong>: Execute a Sensu Go check</p>
 
-<p>Example: <code>bolt task run sensu::check_execute check=test subscription=entity:sensu_agent --nodes sensu_backend</code></p>
+<p>Example: <code>bolt task run sensu::check_execute check=test subscription=entity:sensu_agent --targets sensu_backend</code></p>
 
 <p><strong>sensu::event.json</strong>: Manage Sensu Go events</p>
 
-<p>Example: <code>bolt task run sensu::event action=resolve entity=sensu_agent check=test --nodes sensu_backend</code></p>
+<p>Example: <code>bolt task run sensu::event action=resolve entity=sensu_agent check=test --targets sensu_backend</code></p>
 
-<p>Example: <code>bolt task run sensu::event action=delete entity=sensu_agent check=test --nodes sensu_backend</code></p>
+<p>Example: <code>bolt task run sensu::event action=delete entity=sensu_agent check=test --targets sensu_backend</code></p>
 
 <p><strong>sensu::silenced</strong>: Manage Sensu Go silencings</p>
 
-<p>Example: <code>bolt task run sensu::silenced action=create subscription=entity:sensu_agent expire_on_resolve=true --nodes sensu_backend</code></p>
+<p>Example: <code>bolt task run sensu::silenced action=create subscription=entity:sensu_agent expire_on_resolve=true --targets sensu_backend</code></p>
 
-<p>Example: <code>bolt task run sensu::silenced action=delete subscription=entity:sensu_agent --nodes sensu_backend</code></p>
+<p>Example: <code>bolt task run sensu::silenced action=delete subscription=entity:sensu_agent --targets sensu_backend</code></p>
 
 <p><strong>sensu::install_agent</strong>: Install Sensu Go agent (Windows and Linux)</p>
 
-<p>Example: <code>bolt task run sensu::install_agent backend=sensu_backend:8081 subscription=linux output=true --nodes linux</code></p>
+<p>Example: <code>bolt task run sensu::install_agent backend=sensu_backend:8081 subscription=linux output=true --targets linux</code></p>
 
-<p>Example: <code>bolt task run sensu::install_agent backend=sensu_backend:8081 subscription=windows output=true --nodes windows</code></p>
+<p>Example: <code>bolt task run sensu::install_agent backend=sensu_backend:8081 subscription=windows output=true --targets windows</code></p>
 
 <h3>Bolt Inventory</h3>
 

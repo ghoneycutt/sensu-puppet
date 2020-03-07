@@ -6,15 +6,15 @@
 <title>
   Class: Puppet::Provider::Sensuctl
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="../../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "Puppet::Provider::Sensuctl";
   relpath = '../../';
 </script>
@@ -731,13 +731,14 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the value of attribute chunk_size</p>
+    <p>Returns the value of attribute chunk_size.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+
 
 </div><table class="source_code">
   <tr>
@@ -773,13 +774,14 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the value of attribute path</p>
+    <p>Returns the value of attribute path.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+
 
 </div><table class="source_code">
   <tr>
@@ -879,9 +881,9 @@
       <pre class="code"><span class="info file"># File 'lib/puppet/provider/sensuctl.rb', line 15</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_config_path'>config_path</span>
-  <span class='kw'>if</span> <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:home</span><span class='rparen'>)</span>
+  <span class='kw'>begin</span>
     <span class='id identifier rubyid_home'>home</span> <span class='op'>=</span> <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_home'>home</span>
-  <span class='kw'>else</span>
+  <span class='kw'>rescue</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='const'>NoMethodError</span>
     <span class='comment'># https://github.com/sensu/sensu-puppet/issues/1072
 </span>    <span class='comment'># since $HOME is not set in systemd service File.expand_path(&#39;~&#39;) won&#39;t work
 </span>    <span class='id identifier rubyid_home'>home</span> <span class='op'>=</span> <span class='const'>Etc</span><span class='period'>.</span><span class='id identifier rubyid_getpwuid'>getpwuid</span><span class='lparen'>(</span><span class='const'>Process</span><span class='period'>.</span><span class='id identifier rubyid_uid'>uid</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_dir'>dir</span>
@@ -1422,6 +1424,7 @@
 </div>
 <div class="tags">
   
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -1758,6 +1761,7 @@
 </div>
 <div class="tags">
   
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
