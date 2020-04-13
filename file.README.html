@@ -85,6 +85,8 @@
 <li><a href="#label-Manage+windows+agent">Manage Windows Agent</a></li>
 <li><a href="#label-Advanced+agent">Advanced agent</a></li>
 <li><a href="#label-Advanced+agent+++subscriptions">Advanced agent - Subscriptions</a></li>
+<li><a href="#label-Advanced+agent+++annotations+and+labels">Advanced agent - Annotations and Labels</a></li>
+<li><a href="#label-Advanced+agent+++custom+config+entries">Advanced agent - Custom config entries</a></li>
 <li><a href="#label-Advanced+ssl">Advanced SSL</a></li>
 <li><a href="#label-Enterprise+support">Enterprise support</a></li>
 <li><a href="#label-Contact+routing">Contact routing</a></li>
@@ -324,7 +326,7 @@ The output should look like the following:</p>
 
 <p>The following example will configure sensu-backend, sensu-agent on backend and add a check.
 By default this module will configure the backend to use Puppet&#39;s SSL certificate and CA.
-It&#39;s advisable to not rely on the default password. Changing the password requires providing the previous password via <code>old_password</code>.</p>
+It is advisable to not rely on the default password. Changing the password requires providing the previous password via <code>old_password</code>.</p>
 
 <pre class="code puppet"><code class="puppet">  class { &#39;sensu&#39;:
     password     =&gt; &#39;supersecret&#39;,
@@ -442,7 +444,7 @@ sensu::old_password: &#39;P@ssw0rd!&#39;
 <h3>Advanced agent</h3>
 
 <p>If you wish to change the <code>agent</code> password you must provide the new and old password.
-It&#39;s advisable to set <code>show_diff</code> to <code>false</code> to avoid exposing the agent password.</p>
+It is advisable to set <code>show_diff</code> to <code>false</code> to avoid exposing the agent password.</p>
 
 <pre class="code puppet"><code class="puppet">class { &#39;sensu::backend&#39;:
   agent_password     =&gt; &#39;supersecret&#39;,
@@ -458,7 +460,7 @@ class { &#39;sensu::agent&#39;:
 
 <h3>Advanced agent - Subscriptions</h3>
 
-<p>It&#39;s possible to define subscriptions in many locations and the values merged into <code>agent.yml</code>:</p>
+<p>It is possible to define subscriptions in many locations and the values merged into <code>agent.yml</code>:</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;sensu::agent&#39;:
   subscriptions =&gt; [&#39;base&#39;],
@@ -471,6 +473,54 @@ class { &#39;sensu::agent&#39;:
 </code></pre>
 
 <p>The resulting <code>agent.yml</code> would contain subscriptions for both <code>base</code> and <code>apache</code>.</p>
+
+<p><strong>NOTE</strong>: Subscriptions defined using the <code>sensu::agent</code> class and <code>sensu::agent::subscription</code> are merged to produce the final subscription array.</p>
+
+<h3>Advanced agent - Annotations and Labels</h3>
+
+<p>It is possible to define annotations and labels in many locations and the values merged into <code>agent.yml</code>:</p>
+
+<pre class="code puppet"><code class="puppet">class { &#39;sensu::agent&#39;:
+  labels      =&gt; { &#39;location&#39; =&gt; &#39;uswest&#39;, &#39;contacts&#39; =&gt; &#39;ops@example.com&#39; },
+  annotations =&gt; { &#39;cpu.warning&#39; =&gt; &#39;90&#39;, &#39;cpu.critical&#39; =&gt; &#39;100&#39; },
+}
+</code></pre>
+
+<p>Then in a profile class you can define the following:</p>
+
+<pre class="code puppet"><code class="puppet">sensu::agent::label { &#39;contacts&#39;: value =&gt; &#39;devs@example.com&#39; }
+sensu::agent::label { &#39;environment&#39;: value =&gt; &#39;dev&#39; }
+sensu::agent::annotation { &#39;cpu.warning&#39;: value =&gt; &#39;75&#39; }
+sensu::agent::annotation { &#39;fatigue_check/occurrences&#39;: value =&gt; &#39;2&#39; }
+</code></pre>
+
+<p>The resulting <code>agent.yml</code> will contain the following:</p>
+
+<pre class="code yaml"><code class="yaml">labels:
+  location: uswest
+  contacts: devs@example.com
+  environment: dev
+annotations:
+  cpu.warning: &#39;75&#39;
+  cpu.critical: &#39;100&#39;
+  fatigue_check/occurrences: &#39;2&#39;
+</code></pre>
+
+<p><strong>NOTE</strong> <code>sensu::agent::annotation</code> and <code>sensu::agent::label</code> take precedence over values set by the class <code>sensu::agent</code></p>
+
+<h3>Advanced agent - Custom config entries</h3>
+
+<p>It is possible to define config entries for <code>agent.yml</code> in many locations in Puppet:</p>
+
+<pre class="code puppet"><code class="puppet">sensu::agent::config_entry { &#39;keepalive-interval&#39;: value =&gt; 20 }
+</code></pre>
+
+<p>This would add the following to <code>agent.yml</code>:</p>
+
+<pre class="code yaml"><code class="yaml">keepalive-interval: 20
+</code></pre>
+
+<p><strong>NOTE</strong> <code>sensu::agent::config_entry</code> takes precendence over values defined in <code>sensu::agent</code> class.</p>
 
 <h3>Advanced SSL</h3>
 
@@ -889,7 +939,7 @@ sensu::backend::config_hash:
 <h3>Sensu backend federation</h3>
 
 <p>This module supports defining Etcd replicators which allows resources to be sent from one Sensu cluster to another cluster.
-It&#39;s necessary that Etcd be listening on an interface that can be accessed by other Sensu backends.
+It is necessary that Etcd be listening on an interface that can be accessed by other Sensu backends.
 First configure backend Etcd to listen on an interface besides localhost and also use SSL:</p>
 
 <pre class="code puppet"><code class="puppet">class { &#39;sensu::backend&#39;:
@@ -932,7 +982,7 @@ sensu_role { &#39;test&#39;:
 }
 </code></pre>
 
-<p>It&#39;s also possible to add a backend to an existing Sensu federated cluster.
+<p>It is also possible to add a backend to an existing Sensu federated cluster.
 The following example adds the API URL <a href="https://sensu-backend-site3.example.com:8080">https://sensu-backend-site3.example.com:8080</a> to the federated cluster named us-west-2a.</p>
 
 <pre class="code puppet"><code class="puppet">sensu_cluster_federation_member { &#39;https://sensu-backend-site3.example.com:8080 in us-west-2a&#39;:
