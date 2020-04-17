@@ -446,17 +446,36 @@ sensu::old_password: &#39;P@ssw0rd!&#39;
 <p>If you wish to change the <code>agent</code> password you must provide the new and old password.
 It is advisable to set <code>show_diff</code> to <code>false</code> to avoid exposing the agent password.</p>
 
-<pre class="code puppet"><code class="puppet">class { &#39;sensu::backend&#39;:
+<pre class="code puppet"><code class="puppet">class { &#39;sensu&#39;:
   agent_password     =&gt; &#39;supersecret&#39;,
   agent_old_password =&gt; &#39;P@ssw0rd!&#39;,
 }
 class { &#39;sensu::agent&#39;:
-  config_hash =&gt; {
-    &#39;password&#39; =&gt; &#39;supersecret&#39;,
-  },
-  show_diff   =&gt; false,
+  show_diff =&gt; false,
 }
 </code></pre>
+
+<p>The <code>config_hash</code> parameter allows custom configuration for <code>agent.yml</code> outside the <code>sensu::agent</code> class parameters.</p>
+
+<pre class="code puppet"><code class="puppet">class { &#39;sensu::agent&#39;:
+  config_hash =&gt; {
+    &#39;log-level&#39; =&gt; &#39;debug&#39;,
+  },
+}
+</code></pre>
+
+<p>The following parameters in <code>sensu::agent</code> class are used to populate <code>agent.yml</code>:</p>
+
+<ul>
+<li>entity_name - Passed to <code>name</code> key in <code>agent.yml</code></li>
+<li>subscriptions</li>
+<li>annotations</li>
+<li>labels</li>
+<li>namespace</li>
+<li>redact</li>
+</ul>
+
+<p>Agent configurations can also be set via <code>sensu::agent::config_entry</code>. See <a href="#label-Advanced+agent+++custom+config+entries">Advanced agent - Custom config entries</a>.</p>
 
 <h3>Advanced agent - Subscriptions</h3>
 
@@ -507,6 +526,18 @@ annotations:
 </code></pre>
 
 <p><strong>NOTE</strong> <code>sensu::agent::annotation</code> and <code>sensu::agent::label</code> take precedence over values set by the class <code>sensu::agent</code></p>
+
+<p>If you wish to redact a label or annotation you can use the <code>redact</code> parameter and the key will be added to the <code>redact</code> list in <code>agent.yml</code>:</p>
+
+<pre class="code puppet"><code class="puppet">sensu::agent::label { &#39;secret&#39;:
+  value  =&gt; &#39;mysecret&#39;,
+  redact =&gt; true,
+}
+sensu::agent::annotation { &#39;ec2_access_key&#39;:
+  value  =&gt; &#39;some-key&#39;,
+  redact =&gt; true,
+}
+</code></pre>
 
 <h3>Advanced agent - Custom config entries</h3>
 

@@ -390,6 +390,26 @@ Passing <code>namespace</code> as part of <code>config_hash</code> takes precede
   
     <li>
       
+        <span class='name'>redact</span>
+      
+      
+        <span class='type'>(<tt>Array[String[1]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[&#39;password&#39;,&#39;passwd&#39;,&#39;pass&#39;,&#39;api_key&#39;,&#39;api_token&#39;,&#39;access_key&#39;,&#39;secret_key&#39;,&#39;private_key&#39;,&#39;secret&#39;]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The agent entity redact list
+Passing <code>redact</code> as part of <code>config_hash</code> takes precedence
+Defaults come from Sensu documentation:
+<a href="https://docs.sensu.io/sensu-go/latest/reference/agent/#security-configuration-flags">https://docs.sensu.io/sensu-go/latest/reference/agent/#security-configuration-flags</a></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>show_diff</span>
       
       
@@ -434,11 +454,6 @@ Defaults to <code>C:\ProgramData\sensu\log\sensu-agent.log</code></p>
         <pre class="lines">
 
 
-67
-68
-69
-70
-71
 72
 73
 74
@@ -612,10 +627,17 @@ Defaults to <code>C:\ProgramData\sensu\log\sensu-agent.log</code></p>
 242
 243
 244
-245</pre>
+245
+246
+247
+248
+249
+250
+251
+252</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/agent.pp', line 67</span>
+        <pre class="code"><span class="info file"># File 'manifests/agent.pp', line 72</span>
 
 class sensu::agent (
   Optional[String] $version = undef,
@@ -634,6 +656,7 @@ class sensu::agent (
   Optional[Hash] $annotations = undef,
   Optional[Hash] $labels = undef,
   Optional[String] $namespace = undef,
+  Array[String[1]] $redact = [&#39;password&#39;,&#39;passwd&#39;,&#39;pass&#39;,&#39;api_key&#39;,&#39;api_token&#39;,&#39;access_key&#39;,&#39;secret_key&#39;,&#39;private_key&#39;,&#39;secret&#39;],
   Boolean $show_diff = true,
   Optional[Stdlib::Absolutepath] $log_file = undef,
 ) {
@@ -669,6 +692,7 @@ class sensu::agent (
     &#39;annotations&#39;   =&gt; $annotations,
     &#39;labels&#39;        =&gt; $labels,
     &#39;namespace&#39;     =&gt; $namespace,
+    &#39;redact&#39;        =&gt; $redact,
     &#39;password&#39;      =&gt; $sensu::agent_password,
   }
   $config = filter($default_config + $ssl_config + $config_hash) |$key, $value| { $value =~ NotUndef }
