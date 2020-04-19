@@ -303,7 +303,7 @@ Passing <code>backend-url</code> as part of <code>config_hash</code> takes prece
         <span class='name'>entity_name</span>
       
       
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
+        <span class='type'>(<tt>Optional[String[1]]</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>undef</tt>)</em>
@@ -321,7 +321,7 @@ Passing <code>name</code> as part of <code>config_hash</code> takes precedence</
         <span class='name'>subscriptions</span>
       
       
-        <span class='type'>(<tt>Optional[Array]</tt>)</span>
+        <span class='type'>(<tt>Optional[Array[String[1]]]</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>undef</tt>)</em>
@@ -339,7 +339,7 @@ Passing <code>subscriptions</code> as part of <code>config_hash</code> takes pre
         <span class='name'>annotations</span>
       
       
-        <span class='type'>(<tt>Optional[Hash]</tt>)</span>
+        <span class='type'>(<tt>Optional[Hash[String[1],String]]</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>undef</tt>)</em>
@@ -357,7 +357,7 @@ Passing <code>annotations</code> as part of <code>config_hash</code> takes prece
         <span class='name'>labels</span>
       
       
-        <span class='type'>(<tt>Optional[Hash]</tt>)</span>
+        <span class='type'>(<tt>Optional[Hash[String[1],String]]</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>undef</tt>)</em>
@@ -375,7 +375,7 @@ Passing <code>labels</code> as part of <code>config_hash</code> takes precedence
         <span class='name'>namespace</span>
       
       
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
+        <span class='type'>(<tt>Optional[String[1]]</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>undef</tt>)</em>
@@ -651,11 +651,11 @@ class sensu::agent (
   Boolean $service_enable = true,
   Hash $config_hash = {},
   Optional[Array[Sensu::Backend_URL]] $backends = undef,
-  Optional[String] $entity_name = undef,
-  Optional[Array] $subscriptions = undef,
-  Optional[Hash] $annotations = undef,
-  Optional[Hash] $labels = undef,
-  Optional[String] $namespace = undef,
+  Optional[String[1]] $entity_name = undef,
+  Optional[Array[String[1]]] $subscriptions = undef,
+  Optional[Hash[String[1],String]] $annotations = undef,
+  Optional[Hash[String[1],String]] $labels = undef,
+  Optional[String[1]] $namespace = undef,
   Array[String[1]] $redact = [&#39;password&#39;,&#39;passwd&#39;,&#39;pass&#39;,&#39;api_key&#39;,&#39;api_token&#39;,&#39;access_key&#39;,&#39;secret_key&#39;,&#39;private_key&#39;,&#39;secret&#39;],
   Boolean $show_diff = true,
   Optional[Stdlib::Absolutepath] $log_file = undef,

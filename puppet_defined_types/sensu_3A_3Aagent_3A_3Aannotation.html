@@ -114,7 +114,7 @@
         <span class='name'>value</span>
       
       
-        <span class='type'>(<tt>String[1]</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -195,7 +195,7 @@
         <pre class="code"><span class="info file"># File 'manifests/agent/annotation.pp', line 15</span>
 
 define sensu::agent::annotation (
-  String[1] $value,
+  String $value,
   String[1] $key   = $name,
   Boolean $redact = false,
   String[1] $order = &#39;50&#39;,
