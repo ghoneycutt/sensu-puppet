@@ -116,8 +116,7 @@
 19
 20
 21
-22
-23</pre>
+22</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/api.pp', line 8</span>
@@ -126,10 +125,9 @@ class sensu::api {
   include sensu
 
   sensu_api_config { &#39;sensu&#39;:
-    url          =&gt; $sensu::api_url,
-    username     =&gt; &#39;admin&#39;,
-    password     =&gt; $sensu::password,
-    old_password =&gt; $sensu::old_password,
+    url      =&gt; $sensu::api_url,
+    username =&gt; &#39;admin&#39;,
+    password =&gt; $sensu::password,
   }
 
   sensu_api_validator { &#39;sensu&#39;:

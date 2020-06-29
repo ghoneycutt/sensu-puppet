@@ -142,7 +142,7 @@ class sensu::backend::datastore::postgresql {
   if $sensu::backend::manage_postgresql_db and $sensu::backend::datastore_ensure == &#39;present&#39; {
     postgresql::server::db { $dbname:
       user     =&gt; $user,
-      password =&gt; postgresql_password($user, $password),
+      password =&gt; postgresql::postgresql_password($user, $password),
       before   =&gt; Sensu_postgres_config[$sensu::backend::postgresql_name],
     }
   }

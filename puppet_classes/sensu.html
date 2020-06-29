@@ -377,7 +377,7 @@ This parameter is mutually exclusive with ssl_ca_source</p>
       
       
         &mdash;
-        <div class='inline'><p>Sensu backend admin old password needed when changing password.</p>
+        <div class='inline'><p>DEPRECATED - Sensu backend admin old password needed when changing password.</p>
 </div>
       
     </li>
@@ -411,7 +411,7 @@ This parameter is mutually exclusive with ssl_ca_source</p>
       
       
         &mdash;
-        <div class='inline'><p>The sensu agent old password needed when changing agent_password</p>
+        <div class='inline'><p>DEPRECATED - The sensu agent old password needed when changing agent_password</p>
 </div>
       
     </li>
@@ -519,7 +519,14 @@ This parameter is mutually exclusive with ssl_ca_source</p>
 151
 152
 153
-154</pre>
+154
+155
+156
+157
+158
+159
+160
+161</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 62</span>
@@ -545,6 +552,13 @@ class sensu (
   String $agent_password = &#39;P@ssw0rd!&#39;,
   Optional[String] $agent_old_password = undef,
 ) {
+
+  if $old_password {
+    warning(&#39;Sensu: old_password parameter is unnecessary and will be removed in a future release&#39;)
+  }
+  if $agent_old_password {
+    warning(&#39;Sensu: agent_old_password parameter is unnecessary and will be removed in a future release&#39;)
+  }
 
   if $ssl_ca_content {
     $_ssl_ca_source = undef

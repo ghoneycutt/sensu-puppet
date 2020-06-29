@@ -94,6 +94,7 @@
 <li><code>Service[sensu-backend]</code></li>
 <li><code>Sensuctl_configure[puppet]</code></li>
 <li><code>Sensu_api_validator[sensu]</code></li>
+<li><code>Sensu_user[admin]</code></li>
 </ul>
 
   </div>
@@ -120,10 +121,9 @@
 </div></p>
       
       <pre class="example code"><code>sensu_user { &#39;test&#39;
-  ensure       =&gt; &#39;present&#39;,
-  password     =&gt; &#39;newpassword&#39;,
-  old_password =&gt; &#39;supersecret&#39;,
-  groups       =&gt; [&#39;users&#39;],
+  ensure   =&gt; &#39;present&#39;,
+  password =&gt; &#39;newpassword&#39;,
+  groups   =&gt; [&#39;users&#39;],
 }</code></pre>
     
   </div>
@@ -322,7 +322,7 @@
       
       <div class="docstring">
         <div class="discussion">
-          <p>The user&#39;s old password, needed in order to change a user&#39;s password</p>
+          <p>DEPRECATED - The user&#39;s old password, needed in order to change a user&#39;s password</p>
 
         </div>
       </div>

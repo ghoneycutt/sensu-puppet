@@ -867,7 +867,23 @@ datastore parameters must still be defined.</p>
 302
 303
 304
-305</pre>
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 85</span>
@@ -975,21 +991,21 @@ class sensu::backend (
   sensu_user { &#39;admin&#39;:
     ensure                    =&gt; &#39;present&#39;,
     password                  =&gt; $sensu::password,
-    old_password              =&gt; $sensu::old_password,
     groups                    =&gt; [&#39;cluster-admins&#39;],
     disabled                  =&gt; false,
     configure                 =&gt; true,
     configure_url             =&gt; $sensu::api_url,
     configure_trusted_ca_file =&gt; $sensu::trusted_ca_file,
+    provider                  =&gt; &#39;sensu_api&#39;,
+    before                    =&gt; Sensuctl_configure[&#39;puppet&#39;],
   }
 
   if $manage_agent_user {
     sensu_user { &#39;agent&#39;:
-      ensure       =&gt; &#39;present&#39;,
-      disabled     =&gt; $agent_user_disabled,
-      password     =&gt; $sensu::agent_password,
-      old_password =&gt; $sensu::agent_old_password,
-      groups       =&gt; [&#39;system:agents&#39;],
+      ensure   =&gt; &#39;present&#39;,
+      disabled =&gt; $agent_user_disabled,
+      password =&gt; $sensu::agent_password,
+      groups   =&gt; [&#39;system:agents&#39;],
     }
   }
 
@@ -1091,6 +1107,22 @@ class sensu::backend (
     enable    =&gt; $service_enable,
     name      =&gt; $service_name,
     subscribe =&gt; $service_subscribe,
+  }
+
+  exec { &#39;sensu-backend init&#39;:
+    path        =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
+    refreshonly =&gt; true,
+    environment =&gt; [
+      &#39;SENSU_BACKEND_CLUSTER_ADMIN_USERNAME=admin&#39;,
+      &quot;SENSU_BACKEND_CLUSTER_ADMIN_PASSWORD=${sensu::password}&quot;,
+    ],
+    returns     =&gt; [0, 3],
+    subscribe   =&gt; Package[&#39;sensu-go-backend&#39;],
+    require     =&gt; Sensu_api_validator[&#39;sensu&#39;],
+    before      =&gt; [
+      Sensu_user[&#39;admin&#39;],
+      Sensuctl_configure[&#39;puppet&#39;],
+    ],
   }
 }</pre>
       </td>

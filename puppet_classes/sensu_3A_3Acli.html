@@ -315,8 +315,7 @@ Paths with puppet:// or file:// paths will also be installed.</p>
 95
 96
 97
-98
-99</pre>
+98</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/cli.pp', line 30</span>
@@ -384,7 +383,6 @@ class sensu::cli (
       url              =&gt; $sensu::api_url,
       username         =&gt; &#39;admin&#39;,
       password         =&gt; $sensu::password,
-      old_password     =&gt; $sensu::old_password,
       trusted_ca_file  =&gt; $sensu::trusted_ca_file,
       config_format    =&gt; $config_format,
       config_namespace =&gt; $config_namespace,
