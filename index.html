@@ -1027,6 +1027,18 @@ The following example adds the API URL <a href="https://sensu-backend-site3.exam
 }
 </code></pre>
 
+<p>If many thousands of resources such as <code>sensu_check</code> are defined there will be an execution of <code>sensuctl namespace list</code> for each check to validate
+the namespace exists if the namespace is not defined in Puppet.
+A similar validation is performed with <code>sensu_api</code> provider.  To avoid this extra overhead it may be necessary to disable this validation if you
+are defining namespaces outside of Puppet.</p>
+
+<p><strong>NOTE</strong>: If namespace validation is disabled it&#39;s necessary to ensure a namespace is defined in Puppet in order to assign resources to that namespace.</p>
+
+<pre class="code puppet"><code class="puppet">class { &#39;sensu&#39;:
+  validate_namespaces =&gt; false,
+}
+</code></pre>
+
 <h3>Composite Names for Namespaces</h3>
 
 <p>All resources that support having a <code>namespace</code> also support a composite name to define the namespace.</p>

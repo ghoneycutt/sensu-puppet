@@ -315,7 +315,8 @@ Paths with puppet:// or file:// paths will also be installed.</p>
 95
 96
 97
-98</pre>
+98
+99</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/cli.pp', line 30</span>
@@ -375,8 +376,9 @@ class sensu::cli (
 
   if $configure {
     sensuctl_config { &#39;sensu&#39;:
-      chunk_size =&gt; $sensuctl_chunk_size,
-      path       =&gt; $sensuctl_path,
+      chunk_size          =&gt; $sensuctl_chunk_size,
+      path                =&gt; $sensuctl_path,
+      validate_namespaces =&gt; $sensu::validate_namespaces,
     }
 
     sensuctl_configure { &#39;puppet&#39;:

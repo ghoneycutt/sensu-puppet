@@ -416,6 +416,23 @@ This parameter is mutually exclusive with ssl_ca_source</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>validate_namespaces</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Determines if sensuctl and sensu_api types will validate their namespace exists</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -427,8 +444,6 @@ This parameter is mutually exclusive with ssl_ca_source</p>
         <pre class="lines">
 
 
-62
-63
 64
 65
 66
@@ -526,10 +541,13 @@ This parameter is mutually exclusive with ssl_ca_source</p>
 158
 159
 160
-161</pre>
+161
+162
+163
+164</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 62</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 64</span>
 
 class sensu (
   String $version = &#39;installed&#39;,
@@ -551,6 +569,7 @@ class sensu (
   Optional[String] $old_password = undef,
   String $agent_password = &#39;P@ssw0rd!&#39;,
   Optional[String] $agent_old_password = undef,
+  Boolean $validate_namespaces = true,
 ) {
 
   if $old_password {
