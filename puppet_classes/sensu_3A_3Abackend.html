@@ -6,7 +6,7 @@
 <title>
   Puppet Class: sensu::backend
   
-    &mdash; Documentation by YARD 0.9.24
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
@@ -621,6 +621,184 @@ datastore parameters must still be defined.</p>
   
     <li>
       
+        <span class='name'>postgresql_sslmode</span>
+      
+      
+        <span class='type'>(<tt>Enum['disable','require','verify-ca','verify-full']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;require&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The PostgreSQL sslmode value</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_ssl_dir</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/var/lib/sensu/.postgresql&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The path to store SSL related files for PostgreSQL connections</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_ssl_ca_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The source of PostgreSQL SSL CA
+Do not define with postgresql_ssl_ca_content</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_ssl_ca_content</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The content of PostgreSQL SSL CA
+Do not define with postgresql_ssl_ca_source</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_ssl_crl_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The source of PostgreSQL SSL CRL
+Do not define with postgresql_ssl_crl_content</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_ssl_crl_content</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The content of PostgreSQL SSL CRL
+Do not define with postgresql_ssl_crl_source</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_ssl_cert_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The source of PostgreSQL SSL certificate
+Do not define with postgresql_ssl_cert_content</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_ssl_cert_content</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The content of PostgreSQL SSL certificate
+Do not define with postgresql_ssl_cert_source</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_ssl_key_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The source of PostgreSQL SSL private key
+Do not define with postgresql_ssl_key_content</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_ssl_key_content</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The content of PostgreSQL SSL private key
+Do not define with postgresql_ssl_key_source</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>postgresql_pool_size</span>
       
       
@@ -647,34 +825,6 @@ datastore parameters must still be defined.</p>
         <pre class="lines">
 
 
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
 113
 114
 115
@@ -883,10 +1033,48 @@ datastore parameters must still be defined.</p>
 318
 319
 320
-321</pre>
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 85</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 113</span>
 
 class sensu::backend (
   Optional[String] $version = undef,
@@ -919,6 +1107,16 @@ class sensu::backend (
   Stdlib::Host $postgresql_host = &#39;localhost&#39;,
   Stdlib::Port $postgresql_port = 5432,
   String $postgresql_dbname = &#39;sensu&#39;,
+  Enum[&#39;disable&#39;,&#39;require&#39;,&#39;verify-ca&#39;,&#39;verify-full&#39;] $postgresql_sslmode = &#39;require&#39;,
+  Stdlib::Absolutepath $postgresql_ssl_dir = &#39;/var/lib/sensu/.postgresql&#39;,
+  Optional[String] $postgresql_ssl_ca_source = undef,
+  Optional[String] $postgresql_ssl_ca_content = undef,
+  Optional[String] $postgresql_ssl_crl_source = undef,
+  Optional[String] $postgresql_ssl_crl_content = undef,
+  Optional[String] $postgresql_ssl_cert_source = undef,
+  Optional[String] $postgresql_ssl_cert_content = undef,
+  Optional[String] $postgresql_ssl_key_source = undef,
+  Optional[String] $postgresql_ssl_key_content = undef,
   Integer $postgresql_pool_size = 20,
 ) {
 
