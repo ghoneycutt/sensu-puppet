@@ -1071,7 +1071,9 @@ Do not define with postgresql_ssl_key_source</p>
 356
 357
 358
-359</pre>
+359
+360
+361</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 113</span>
@@ -1309,13 +1311,15 @@ class sensu::backend (
 
   exec { &#39;sensu-backend init&#39;:
     path        =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
-    refreshonly =&gt; true,
     environment =&gt; [
       &#39;SENSU_BACKEND_CLUSTER_ADMIN_USERNAME=admin&#39;,
       &quot;SENSU_BACKEND_CLUSTER_ADMIN_PASSWORD=${sensu::password}&quot;,
     ],
     returns     =&gt; [0, 3],
-    subscribe   =&gt; Package[&#39;sensu-go-backend&#39;],
+    # sensu-backend init will exit with code 3 if already run
+    # If exit code is 3, do not need to run sensu-backend init again
+    # If exit is not 3, run sensu-backend init
+    unless      =&gt; &#39;sensu-backend init ; [ $? -eq 3 ] &amp;&amp; exit 0 || exit 1&#39;,
     require     =&gt; Sensu_api_validator[&#39;sensu&#39;],
     before      =&gt; [
       Sensu_user[&#39;admin&#39;],
