@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Puppet Task: install_agent
+  Puppet Task: backend_upgrade
   
     &mdash; Documentation by YARD 0.9.25
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
 <script type="text/javascript">
-  pathId = "puppet_tasks::install_agent";
+  pathId = "puppet_tasks::backend_upgrade";
   relpath = '../';
 </script>
 
@@ -36,10 +36,10 @@
       <div id="header">
         <div id="menu">
   
-    <a href="../_index.html">Index (i)</a> &raquo;
+    <a href="../_index.html">Index (b)</a> &raquo;
     <span class='title'><span class='object_link'>Puppet Tasks</span></span>
      &raquo; 
-    <span class="title">install_agent</span>
+    <span class="title">backend_upgrade</span>
   
 </div>
 
@@ -59,13 +59,13 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Puppet Task: install_agent</h1>
+      <div id="content"><h1>Puppet Task: backend_upgrade</h1>
 <div class="box_info">
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      tasks/install_agent.json,<br />
-      tasks/install_agent.rb<br/></div>
+      tasks/backend_upgrade.json,<br />
+      tasks/backend_upgrade.rb<br/></div>
     </dd>
   </dl>
 </div>
@@ -76,7 +76,7 @@
 </div><h2>Overview</h2>
 <div class="docstring">
   <div class="discussion">
-    Install Sensu Go agent
+    Execute Sensu Go backend upgrade
   </div>
 </div>
 
@@ -90,43 +90,83 @@
   <ul>
     
     <li>
-        <span class="name">backend</span>
-        <span class="type">
-            <tt>(String[1])</tt>
-        </span>
-         &mdash; The backend(s) to connect agent to
-    </li>
-    
-    <li>
-        <span class="name">subscription</span>
-        <span class="type">
-            <tt>(String[1])</tt>
-        </span>
-         &mdash; The subscription(s) for the agent
-    </li>
-    
-    <li>
-        <span class="name">entity_name</span>
+        <span class="name">config_file</span>
         <span class="type">
             <tt>(Optional[String[1]])</tt>
         </span>
-         &mdash; The agent entity name
+         &mdash; Path to backend.yml
     </li>
     
     <li>
-        <span class="name">namespace</span>
+        <span class="name">timeout</span>
+        <span class="type">
+            <tt>(Optional[Integer])</tt>
+        </span>
+         &mdash; Timeout for connecting to etcd
+    </li>
+    
+    <li>
+        <span class="name">etcd_advertise_client_urls</span>
+        <span class="type">
+            <tt>(Optional[Array])</tt>
+        </span>
+         &mdash; list of this member's client URLs to advertise to clients
+    </li>
+    
+    <li>
+        <span class="name">etcd_cert_file</span>
         <span class="type">
             <tt>(Optional[String[1]])</tt>
         </span>
-         &mdash; The namespace for the agent, default is 'default'
+         &mdash; path to the client server TLS cert file
     </li>
     
     <li>
-        <span class="name">output</span>
+        <span class="name">etcd_cipher_suites</span>
+        <span class="type">
+            <tt>(Optional[Array])</tt>
+        </span>
+         &mdash; list of ciphers to use for etcd TLS configuration
+    </li>
+    
+    <li>
+        <span class="name">etcd_client_cert_auth</span>
         <span class="type">
             <tt>(Optional[Boolean])</tt>
         </span>
-         &mdash; Return output from commands
+         &mdash; enable client cert authentication
+    </li>
+    
+    <li>
+        <span class="name">etcd_client_urls</span>
+        <span class="type">
+            <tt>(Optional[Array])</tt>
+        </span>
+         &mdash; client URLs to use when operating as an etcd client
+    </li>
+    
+    <li>
+        <span class="name">etcd_key_file</span>
+        <span class="type">
+            <tt>(Optional[String[1]])</tt>
+        </span>
+         &mdash; path to the client server TLS key file
+    </li>
+    
+    <li>
+        <span class="name">etcd_max_request_bytes</span>
+        <span class="type">
+            <tt>(Optional[Integer])</tt>
+        </span>
+         &mdash; maximum etcd request size in bytes (use with caution)
+    </li>
+    
+    <li>
+        <span class="name">etcd_trusted_ca_file</span>
+        <span class="type">
+            <tt>(Optional[String[1]])</tt>
+        </span>
+         &mdash; path to the client server TLS trusted CA cert file
     </li>
     
   </ul>

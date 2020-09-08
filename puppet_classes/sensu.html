@@ -367,23 +367,6 @@ This parameter is mutually exclusive with ssl_ca_source</p>
   
     <li>
       
-        <span class='name'>old_password</span>
-      
-      
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>DEPRECATED - Sensu backend admin old password needed when changing password.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>agent_password</span>
       
       
@@ -401,7 +384,7 @@ This parameter is mutually exclusive with ssl_ca_source</p>
   
     <li>
       
-        <span class='name'>agent_old_password</span>
+        <span class='name'>agent_entity_config_password</span>
       
       
         <span class='type'>(<tt>Optional[String]</tt>)</span>
@@ -411,7 +394,8 @@ This parameter is mutually exclusive with ssl_ca_source</p>
       
       
         &mdash;
-        <div class='inline'><p>DEPRECATED - The sensu agent old password needed when changing agent_password</p>
+        <div class='inline'><p>The password used when configuring Sensu Agent entity config items
+Defaults to value used for <code>agent_password</code>.</p>
 </div>
       
     </li>
@@ -444,6 +428,7 @@ This parameter is mutually exclusive with ssl_ca_source</p>
         <pre class="lines">
 
 
+63
 64
 65
 66
@@ -537,17 +522,10 @@ This parameter is mutually exclusive with ssl_ca_source</p>
 154
 155
 156
-157
-158
-159
-160
-161
-162
-163
-164</pre>
+157</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 64</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 63</span>
 
 class sensu (
   String $version = &#39;installed&#39;,
@@ -566,18 +544,10 @@ class sensu (
   String $api_host = $trusted[&#39;certname&#39;],
   Stdlib::Port $api_port = 8080,
   String $password = &#39;P@ssw0rd!&#39;,
-  Optional[String] $old_password = undef,
   String $agent_password = &#39;P@ssw0rd!&#39;,
-  Optional[String] $agent_old_password = undef,
+  Optional[String] $agent_entity_config_password = undef,
   Boolean $validate_namespaces = true,
 ) {
-
-  if $old_password {
-    warning(&#39;Sensu: old_password parameter is unnecessary and will be removed in a future release&#39;)
-  }
-  if $agent_old_password {
-    warning(&#39;Sensu: agent_old_password parameter is unnecessary and will be removed in a future release&#39;)
-  }
 
   if $ssl_ca_content {
     $_ssl_ca_source = undef
@@ -618,6 +588,8 @@ class sensu (
     $trusted_ca_file = &#39;absent&#39;
   }
   $api_url = &quot;${api_protocol}://${api_host}:${api_port}&quot;
+
+  $_agent_entity_config_password = pick($agent_entity_config_password, $agent_password)
 
   case $facts[&#39;os&#39;][&#39;family&#39;] {
     &#39;RedHat&#39;: {

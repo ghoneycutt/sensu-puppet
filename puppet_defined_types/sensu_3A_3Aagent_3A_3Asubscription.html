@@ -126,6 +126,40 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>entity</span>
+      
+      
+        <span class='type'>(<tt>Optional[String[1]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Entity where to manage this subscription</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>namespace</span>
+      
+      
+        <span class='type'>(<tt>Optional[String[1]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Namespace of entity to manage this subscription</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -137,10 +171,6 @@
         <pre class="lines">
 
 
-11
-12
-13
-14
 15
 16
 17
@@ -148,21 +178,69 @@
 19
 20
 21
-22</pre>
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/agent/subscription.pp', line 11</span>
+        <pre class="code"><span class="info file"># File 'manifests/agent/subscription.pp', line 15</span>
 
 define sensu::agent::subscription (
   String[1] $subscription = $name,
   String[1] $order        = &#39;50&#39;,
+  Optional[String[1]] $entity = undef,
+  Optional[String[1]] $namespace = undef,
 ) {
+  include sensu::agent
+  if ! $entity {
+    $_entity = $sensu::agent::config[&#39;name&#39;]
+  } else{
+    $_entity = $entity
+  }
+  if ! $namespace {
+    $_namespace = $sensu::agent::config[&#39;namespace&#39;]
+  } else {
+    $_namespace = $namespace
+  }
+
   datacat_fragment { &quot;sensu_agent_config-subscription-${name}&quot;:
     target =&gt; &#39;sensu_agent_config&#39;,
     data   =&gt; {
       &#39;subscriptions&#39; =&gt; [$subscription],
     },
     order  =&gt; $order,
+  }
+
+  sensu_agent_entity_config { &quot;sensu::agent::subscription ${name}&quot;:
+    config    =&gt; &#39;subscriptions&#39;,
+    value     =&gt; $subscription,
+    entity    =&gt; $_entity,
+    namespace =&gt; $_namespace,
+    provider  =&gt; $sensu::agent::agent_entity_config_provider,
   }
 }</pre>
       </td>

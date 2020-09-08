@@ -342,6 +342,23 @@ This parameter is mutually exclusive with ssl_key_source</p>
   
     <li>
       
+        <span class='name'>include_agent_resources</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Sets if agent RBAC resources should be included</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>manage_agent_user</span>
       
       
@@ -825,8 +842,6 @@ Do not define with postgresql_ssl_key_source</p>
         <pre class="lines">
 
 
-113
-114
 115
 116
 117
@@ -1073,10 +1088,16 @@ Do not define with postgresql_ssl_key_source</p>
 358
 359
 360
-361</pre>
+361
+362
+363
+364
+365
+366
+367</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 113</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 115</span>
 
 class sensu::backend (
   Optional[String] $version = undef,
@@ -1093,6 +1114,7 @@ class sensu::backend (
   Optional[String] $ssl_key_source = $facts[&#39;puppet_hostprivkey&#39;],
   Optional[String] $ssl_key_content = undef,
   Boolean $include_default_resources = true,
+  Boolean $include_agent_resources = true,
   Boolean $manage_agent_user = true,
   Boolean $agent_user_disabled = false,
   Boolean $show_diff = true,
@@ -1178,6 +1200,9 @@ class sensu::backend (
 
   if $include_default_resources {
     include sensu::backend::default_resources
+  }
+  if $include_agent_resources {
+    include sensu::backend::agent_resources
   }
 
   # See https://docs.sensu.io/sensu-go/latest/installation/upgrade/

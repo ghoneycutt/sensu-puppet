@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Puppet Task: install_agent
+  Provider: sensu_api
   
     &mdash; Documentation by YARD 0.9.25
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
 <script type="text/javascript">
-  pathId = "puppet_tasks::install_agent";
+  pathId = "puppet_providers_sensu_agent_entity_config::sensu_api";
   relpath = '../';
 </script>
 
@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="nav_wrap">
-      <iframe id="nav" src="../puppet_task_list.html?1"></iframe>
+      <iframe id="nav" src="../puppet_provider_list.html?1"></iframe>
       <div id="resizer"></div>
     </div>
 
@@ -36,10 +36,10 @@
       <div id="header">
         <div id="menu">
   
-    <a href="../_index.html">Index (i)</a> &raquo;
-    <span class='title'><span class='object_link'>Puppet Tasks</span></span>
+    <a href="../_index.html">Index (s)</a> &raquo;
+    <span class='title'><span class='object_link'>Providers</span></span>
      &raquo; 
-    <span class="title">install_agent</span>
+    <span class="title">sensu_api</span>
   
 </div>
 
@@ -59,78 +59,46 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Puppet Task: install_agent</h1>
+      <div id="content"><h1>Provider: sensu_api</h1>
 <div class="box_info">
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      tasks/install_agent.json,<br />
-      tasks/install_agent.rb<br/></div>
+      lib/puppet/provider/sensu_agent_entity_config/sensu_api.rb
     </dd>
   </dl>
+  <dl>
+    <dt>Resource type:</dt>
+    <dd><span class='object_link'><a href="../puppet_types/sensu_agent_entity_config.html" title="puppet_types::sensu_agent_entity_config (puppet_type)">sensu_agent_entity_config</a></span></dd>
+  </dl>
+</div>
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    <p>Provider sensu_agent_entity_config using sensu API</p>
+
+  </div>
 </div>
 <div class="tags">
   
 
 
-</div><h2>Overview</h2>
-<div class="docstring">
-  <div class="discussion">
-    Install Sensu Go agent
-  </div>
-</div>
-
-<div class="tags">
-    <p><strong>Supports noop?</strong> false</p>
 </div>
 
 
 <div class="tags">
-  <p class="tag_title">Parameters</p>
+  <p class="tag_title">Default Provider For</p>
   <ul>
+
+  
     
-    <li>
-        <span class="name">backend</span>
-        <span class="type">
-            <tt>(String[1])</tt>
-        </span>
-         &mdash; The backend(s) to connect agent to
-    </li>
+      <li><tt>kernel &mdash; ['Linux','windows']</tt></li>
     
-    <li>
-        <span class="name">subscription</span>
-        <span class="type">
-            <tt>(String[1])</tt>
-        </span>
-         &mdash; The subscription(s) for the agent
-    </li>
-    
-    <li>
-        <span class="name">entity_name</span>
-        <span class="type">
-            <tt>(Optional[String[1]])</tt>
-        </span>
-         &mdash; The agent entity name
-    </li>
-    
-    <li>
-        <span class="name">namespace</span>
-        <span class="type">
-            <tt>(Optional[String[1]])</tt>
-        </span>
-         &mdash; The namespace for the agent, default is 'default'
-    </li>
-    
-    <li>
-        <span class="name">output</span>
-        <span class="type">
-            <tt>(Optional[Boolean])</tt>
-        </span>
-         &mdash; Return output from commands
-    </li>
-    
+  
   </ul>
 </div>
+
 
 </div>
 

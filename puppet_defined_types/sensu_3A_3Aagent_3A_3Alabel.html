@@ -94,6 +94,23 @@
   
     <li>
       
+        <span class='name'>ensure</span>
+      
+      
+        <span class='type'>(<tt>Enum['present', 'absent']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;present&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Ensure property for the label</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>key</span>
       
       
@@ -158,6 +175,40 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>entity</span>
+      
+      
+        <span class='type'>(<tt>Optional[String[1]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Entity where to manage this label</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>namespace</span>
+      
+      
+        <span class='type'>(<tt>Optional[String[1]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Namespace of entity to manage this label</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -169,12 +220,6 @@
         <pre class="lines">
 
 
-15
-16
-17
-18
-19
-20
 21
 22
 23
@@ -189,30 +234,122 @@
 32
 33
 34
-35</pre>
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/agent/label.pp', line 15</span>
+        <pre class="code"><span class="info file"># File 'manifests/agent/label.pp', line 21</span>
 
 define sensu::agent::label (
   String $value,
+  Enum[&#39;present&#39;, &#39;absent&#39;] $ensure = &#39;present&#39;,
   String[1] $key   = $name,
   Boolean $redact = false,
   String[1] $order = &#39;50&#39;,
+  Optional[String[1]] $entity = undef,
+  Optional[String[1]] $namespace = undef,
 ) {
-  datacat_fragment { &quot;sensu_agent_config-label-${name}&quot;:
-    target =&gt; &#39;sensu_agent_config&#39;,
-    data   =&gt; {
-      &#39;labels&#39; =&gt; { $key =&gt; $value },
-    },
-    order  =&gt; $order,
+  include sensu::agent
+  if ! $entity {
+    $_entity = $sensu::agent::config[&#39;name&#39;]
+  } else{
+    $_entity = $entity
+  }
+  if ! $namespace {
+    $_namespace = $sensu::agent::config[&#39;namespace&#39;]
+  } else {
+    $_namespace = $namespace
+  }
+
+  if $ensure == &#39;present&#39; {
+    datacat_fragment { &quot;sensu_agent_config-label-${name}&quot;:
+      target =&gt; &#39;sensu_agent_config&#39;,
+      data   =&gt; {
+        &#39;labels&#39; =&gt; { $key =&gt; $value },
+      },
+      order  =&gt; $order,
+    }
+  }
+
+  sensu_agent_entity_config { &quot;sensu::agent::label ${name}&quot;:
+    ensure    =&gt; $ensure,
+    config    =&gt; &#39;labels&#39;,
+    key       =&gt; $key,
+    value     =&gt; $value,
+    entity    =&gt; $_entity,
+    namespace =&gt; $_namespace,
+    provider  =&gt; $sensu::agent::agent_entity_config_provider,
+    #TODO: Uncomment once able to support pushing updates for REDACTED
+    # https://github.com/sensu/sensu-go/issues/3955
+    #subscribe =&gt; File[&#39;sensu_agent_config&#39;],
   }
 
   if $redact {
-    sensu::agent::config_entry { &quot;redact-label-${name}&quot;:
-      key   =&gt; &#39;redact&#39;,
-      value =&gt; [$key],
-    }
+    warning(&quot;sensu::agent::label[${name}]: Setting redact is not supported at this time&quot;)
+    #TODO: Uncomment once able to support pushing updates for REDACTED
+    # https://github.com/sensu/sensu-go/issues/3955
+    #if $ensure == &#39;present&#39; {
+    #  sensu::agent::config_entry { &quot;redact-label-${name}&quot;:
+    #    key   =&gt; &#39;redact&#39;,
+    #    value =&gt; [$key],
+    #  }
+    #}
+    #sensu_agent_entity_config { &quot;sensu::agent::label redact ${name}&quot;:
+    #  ensure    =&gt; $ensure,
+    #  config    =&gt; &#39;redact&#39;,
+    #  value     =&gt; $key,
+    #  entity    =&gt; $_entity,
+    #  namespace =&gt; $_namespace,
+    #  provider  =&gt; $sensu::agent::agent_entity_config_provider,
+    #}
   }
 }</pre>
       </td>
