@@ -186,7 +186,11 @@
 94
 95
 96
-97</pre>
+97
+98
+99
+100
+101</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/datastore/postgresql.pp', line 4</span>
@@ -204,9 +208,13 @@ class sensu::backend::datastore::postgresql {
   $dsn = &quot;postgresql://${user}:${password}@${host}:${port}/${dbname}?sslmode=${sslmode}&quot;
 
   sensu_postgres_config { $sensu::backend::postgresql_name:
-    ensure    =&gt; $sensu::backend::datastore_ensure,
-    dsn       =&gt; Sensitive($dsn),
-    pool_size =&gt; $sensu::backend::postgresql_pool_size,
+    ensure        =&gt; $sensu::backend::datastore_ensure,
+    dsn           =&gt; Sensitive($dsn),
+    pool_size     =&gt; $sensu::backend::postgresql_pool_size,
+    strict        =&gt; $sensu::backend::postgresql_strict,
+    batch_buffer  =&gt; $sensu::backend::postgresql_batch_buffer,
+    batch_size    =&gt; $sensu::backend::postgresql_batch_size,
+    batch_workers =&gt; $sensu::backend::postgresql_batch_workers,
   }
 
   if $sensu::backend::manage_postgresql_db and $sensu::backend::datastore_ensure == &#39;present&#39; {

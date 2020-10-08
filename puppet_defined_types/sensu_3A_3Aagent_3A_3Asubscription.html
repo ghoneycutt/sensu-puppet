@@ -240,7 +240,7 @@ define sensu::agent::subscription (
     value     =&gt; $subscription,
     entity    =&gt; $_entity,
     namespace =&gt; $_namespace,
-    provider  =&gt; $sensu::agent::agent_entity_config_provider,
+    provider  =&gt; &#39;sensu_api&#39;,
   }
 }</pre>
       </td>

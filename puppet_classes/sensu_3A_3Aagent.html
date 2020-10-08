@@ -393,10 +393,10 @@ Passing <code>namespace</code> as part of <code>config_hash</code> takes precede
         <span class='name'>redact</span>
       
       
-        <span class='type'>(<tt>Optional[Array[String[1]]]</tt>)</span>
+        <span class='type'>(<tt>Array[String[1]]</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
+        <em class="default">(defaults to: <tt>[&#39;password&#39;,&#39;passwd&#39;,&#39;pass&#39;,&#39;api_key&#39;,&#39;api_token&#39;,&#39;access_key&#39;,&#39;secret_key&#39;,&#39;private_key&#39;,&#39;secret&#39;]</tt>)</em>
       
       
         &mdash;
@@ -692,12 +692,7 @@ Defaults to <code>C:\ProgramData\sensu\log\sensu-agent.log</code></p>
 292
 293
 294
-295
-296
-297
-298
-299
-300</pre>
+295</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/agent.pp', line 74</span>
@@ -719,22 +714,17 @@ class sensu::agent (
   Optional[Hash[String[1],String]] $annotations = undef,
   Optional[Hash[String[1],String]] $labels = undef,
   String[1] $namespace = &#39;default&#39;,
-  Optional[Array[String[1]]] $redact = undef,
+  Array[String[1]] $redact = [&#39;password&#39;,&#39;passwd&#39;,&#39;pass&#39;,&#39;api_key&#39;,&#39;api_token&#39;,&#39;access_key&#39;,&#39;secret_key&#39;,&#39;private_key&#39;,&#39;secret&#39;],
   Boolean $show_diff = true,
   Optional[Stdlib::Absolutepath] $log_file = undef,
   Enum[&#39;sensuctl&#39;,&#39;sensu_api&#39;] $agent_entity_config_provider = &#39;sensu_api&#39;,
 ) {
 
-  if $redact {
-    fail(&#39;sensu::agent: Setting redact is not supported at this time&#39;)
-  }
-
   include sensu
   include sensu::common
+  include sensu::api
   if $agent_entity_config_provider == &#39;sensuctl&#39; {
-    include sensu::cli
-  } else {
-    include sensu::api
+    warning(&#39;Class[sensu::agent]: Using agent_entity_config_provider is deprecated at this time, forcing use of sensu_api provider&#39;)
   }
 
   $_version = pick($version, $sensu::version)
@@ -926,7 +916,7 @@ class sensu::agent (
 
   sensu_agent_entity_validator { $config[&#39;name&#39;]:
     namespace =&gt; $config[&#39;namespace&#39;],
-    provider  =&gt; $agent_entity_config_provider,
+    provider  =&gt; &#39;sensu_api&#39;,
   }
 }</pre>
       </td>

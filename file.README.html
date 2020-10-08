@@ -149,8 +149,12 @@ Please log an issue if you identify any incompatibilities.</p>
 <td>latest v4</td>
 </tr>
 <tr>
-<td>6.0+</td>
-<td>latest v5</td>
+<td>6.0</td>
+<td>v5.0.0</td>
+</tr>
+<tr>
+<td>6.1+</td>
+<td>v5.1.0+</td>
 </tr>
 </tbody></table>
 
@@ -159,7 +163,8 @@ Please log an issue if you identify any incompatibilities.</p>
 <p>Sensu Go 5.x is a rewrite of Sensu and no longer depends on redis and rabbitmq.
 Version 3 of this module supports Sensu Go &gt;= 5.0.0 to &lt; 5.16.0.
 Version 4 of this module supports Sensu Go &gt;= 5.16.0 &lt; 6.0.0.
-Version 5 of this module supports Sensu Go &gt;= 6.0.0 &lt; 7.0.0.</p>
+Version 5.0.0 of this module supports Sensu Go &gt;= 6.0.0 &lt; 6.1.0.
+Version 5.1.0+ of this module supports Sensu Go &gt;= 6.1.0 &lt; 7.0.0.</p>
 
 <p>Users wishing to use the previous Ruby based Sensu should use the <a href="https://forge.puppet.com/sensu/sensuclassic">sensu/sensuclassic</a> module.</p>
 
@@ -194,8 +199,6 @@ class { &#39;sensu::agent&#39;:
 
 <p>This module will still continue to write subscriptions and other agent configurations to <code>agent.yml</code> so that if an agent entity is deleted it can be recreated
 by restarting the <code>sensu-agent</code> service.</p>
-
-<p><strong>NOTE</strong>: At this time redaction of labels or annotations is not supported and will cause this module to produce errors. See <a href="#label-Limitations">limitations</a> for details.</p>
 
 <h3 id="updating-this-module-from-3-x-to-4-x">Updating this module from 3.x to 4.x</h3>
 
@@ -1261,10 +1264,6 @@ groups:
 </ul>
 
 <h2 id="limitations">Limitations</h2>
-
-<p>Sensu Go 6 support of this module can not support redacted labels or annotations due to how agent entity API calls are made.
-At this time this module will produce errors if redacted labels or annotations are encountered.
-See <a href="https://github.com/sensu/sensu-go/issues/3955">sensu-go#3955</a> for details on this issue.</p>
 
 <p>The type <code>sensu_user</code> does not at this time support <code>ensure =&gt; absent</code> due to a limitation with sensuctl, see <a href="https://github.com/sensu/sensu-go/issues/2540">sensu-go#2540</a>.</p>
 

@@ -831,6 +831,74 @@ Do not define with postgresql_ssl_key_source</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>postgresql_strict</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Enables strict configuration checks for PostgreSQL</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_batch_buffer</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>0</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>PostgreSQL batch buffer size</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_batch_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>1</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>PostgreSQL batch size</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_batch_workers</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>20</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>PostgreSQL batch workers</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -842,14 +910,6 @@ Do not define with postgresql_ssl_key_source</p>
         <pre class="lines">
 
 
-115
-116
-117
-118
-119
-120
-121
-122
 123
 124
 125
@@ -1094,10 +1154,22 @@ Do not define with postgresql_ssl_key_source</p>
 364
 365
 366
-367</pre>
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 115</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 123</span>
 
 class sensu::backend (
   Optional[String] $version = undef,
@@ -1142,6 +1214,10 @@ class sensu::backend (
   Optional[String] $postgresql_ssl_key_source = undef,
   Optional[String] $postgresql_ssl_key_content = undef,
   Integer $postgresql_pool_size = 20,
+  Boolean $postgresql_strict = false,
+  Integer $postgresql_batch_buffer = 0,
+  Integer $postgresql_batch_size = 1,
+  Integer $postgresql_batch_workers = 20,
 ) {
 
   if $license_source and $license_content {
