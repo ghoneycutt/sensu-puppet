@@ -219,6 +219,23 @@ RedHat based default: <code>/etc/sysconfig/sensu-backend</code></p>
   
     <li>
       
+        <span class='name'>service_path</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/usr/sbin/sensu-backend&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The path to sensu-backend service executable</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>state_dir</span>
       
       
@@ -910,8 +927,6 @@ Do not define with postgresql_ssl_key_source</p>
         <pre class="lines">
 
 
-123
-124
 125
 126
 127
@@ -1166,10 +1181,25 @@ Do not define with postgresql_ssl_key_source</p>
 376
 377
 378
-379</pre>
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 123</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 125</span>
 
 class sensu::backend (
   Optional[String] $version = undef,
@@ -1179,6 +1209,7 @@ class sensu::backend (
   String $service_name = &#39;sensu-backend&#39;,
   String $service_ensure = &#39;running&#39;,
   Boolean $service_enable = true,
+  Stdlib::Absolutepath $service_path = &#39;/usr/sbin/sensu-backend&#39;,
   Stdlib::Absolutepath $state_dir = &#39;/var/lib/sensu/sensu-backend&#39;,
   Hash $config_hash = {},
   Optional[String] $ssl_cert_source = $facts[&#39;puppet_hostcert&#39;],
@@ -1285,8 +1316,8 @@ class sensu::backend (
   # Only necessary for Puppet &lt; 6.1.0,
   # See https://github.com/puppetlabs/puppet/commit/f8d5c60ddb130c6429ff12736bfdb4ae669a9fd4
   if versioncmp($facts[&#39;puppetversion&#39;],&#39;6.1.0&#39;) &lt; 0 and $facts[&#39;service_provider&#39;] == &#39;systemd&#39; {
-    Package[&#39;sensu-go-backend&#39;] ~&gt; Exec[&#39;sensu systemctl daemon-reload&#39;]
-    Exec[&#39;sensu systemctl daemon-reload&#39;] -&gt; Service[&#39;sensu-backend&#39;]
+    Package[&#39;sensu-go-backend&#39;] ~&gt; Class[&#39;systemd::systemctl::daemon_reload&#39;]
+    Class[&#39;systemd::systemctl::daemon_reload&#39;] -&gt; Service[&#39;sensu-backend&#39;]
   }
 
   sensu_user { &#39;admin&#39;:
@@ -1400,6 +1431,18 @@ class sensu::backend (
       show_diff =&gt; $show_diff,
       require   =&gt; Package[&#39;sensu-go-backend&#39;],
       notify    =&gt; Service[&#39;sensu-backend&#39;],
+    }
+  }
+
+  if $facts[&#39;service_provider&#39;] == &#39;systemd&#39; {
+    systemd::dropin_file { &#39;sensu-backend-start.conf&#39;:
+      unit    =&gt; &#39;sensu-backend.service&#39;,
+      content =&gt; join([
+        &#39;[Service]&#39;,
+        &#39;ExecStart=&#39;,
+        &quot;ExecStart=${service_path} start -c ${sensu::etc_dir}/backend.yml&quot;,
+      ], &quot;\n&quot;),
+      notify  =&gt; Service[&#39;sensu-backend&#39;],
     }
   }
 

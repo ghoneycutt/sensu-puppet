@@ -262,6 +262,23 @@ RedHat based default: <code>/etc/sysconfig/sensu-agent</code></p>
   
     <li>
       
+        <span class='name'>service_path</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/usr/sbin/sensu-agent&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The path to sensu-agent service executable</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>config_hash</span>
       
       
@@ -471,8 +488,6 @@ Defaults to <code>C:\ProgramData\sensu\log\sensu-agent.log</code></p>
         <pre class="lines">
 
 
-74
-75
 76
 77
 78
@@ -692,10 +707,25 @@ Defaults to <code>C:\ProgramData\sensu\log\sensu-agent.log</code></p>
 292
 293
 294
-295</pre>
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/agent.pp', line 74</span>
+        <pre class="code"><span class="info file"># File 'manifests/agent.pp', line 76</span>
 
 class sensu::agent (
   Optional[String] $version = undef,
@@ -707,6 +737,7 @@ class sensu::agent (
   String $service_name = &#39;sensu-agent&#39;,
   String $service_ensure = &#39;running&#39;,
   Boolean $service_enable = true,
+  Stdlib::Absolutepath $service_path = &#39;/usr/sbin/sensu-agent&#39;,
   Hash $config_hash = {},
   Optional[Array[Sensu::Backend_URL]] $backends = undef,
   String[1] $entity_name = $facts[&#39;networking&#39;][&#39;fqdn&#39;],
@@ -843,8 +874,8 @@ class sensu::agent (
   # Only necessary for Puppet &lt; 6.1.0,
   # See https://github.com/puppetlabs/puppet/commit/f8d5c60ddb130c6429ff12736bfdb4ae669a9fd4
   if versioncmp($facts[&#39;puppetversion&#39;],&#39;6.1.0&#39;) &lt; 0 and $facts[&#39;service_provider&#39;] == &#39;systemd&#39; {
-    Package[&#39;sensu-go-agent&#39;] ~&gt; Exec[&#39;sensu systemctl daemon-reload&#39;]
-    Exec[&#39;sensu systemctl daemon-reload&#39;] -&gt; Service[&#39;sensu-agent&#39;]
+    Package[&#39;sensu-go-agent&#39;] ~&gt; Class[&#39;systemd::systemctl::daemon_reload&#39;]
+    Class[&#39;systemd::systemctl::daemon_reload&#39;] -&gt; Service[&#39;sensu-agent&#39;]
   }
 
   package { &#39;sensu-go-agent&#39;:
@@ -904,6 +935,18 @@ class sensu::agent (
         mergemode =&gt; &#39;clobber&#39;,
         notify    =&gt; Service[&#39;sensu-agent&#39;],
       }
+    }
+  }
+
+  if $facts[&#39;service_provider&#39;] == &#39;systemd&#39; {
+    systemd::dropin_file { &#39;sensu-agent-start.conf&#39;:
+      unit    =&gt; &#39;sensu-agent.service&#39;,
+      content =&gt; join([
+        &#39;[Service]&#39;,
+        &#39;ExecStart=&#39;,
+        &quot;ExecStart=${service_path} start -c ${sensu::agent_config_path}&quot;,
+      ], &quot;\n&quot;),
+      notify  =&gt; Service[&#39;sensu-agent&#39;],
     }
   }
 

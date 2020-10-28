@@ -517,12 +517,7 @@ Defaults to value used for <code>agent_password</code>.</p>
 149
 150
 151
-152
-153
-154
-155
-156
-157</pre>
+152</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 63</span>
@@ -596,7 +591,7 @@ class sensu (
       $os_package_require = []
     }
     &#39;Debian&#39;: {
-      $os_package_require = [Class[&#39;::apt::update&#39;]]
+      $os_package_require = [Class[&#39;apt::update&#39;]]
     }
     &#39;windows&#39;: {
       $os_package_require = []
@@ -609,18 +604,13 @@ class sensu (
   # $package_require is used by sensu::agent and sensu::backend
   # package resources
   if $manage_repo {
-    $package_require = [Class[&#39;::sensu::repo&#39;]] + $os_package_require
+    $package_require = [Class[&#39;sensu::repo&#39;]] + $os_package_require
   } else {
     $package_require = undef
   }
 
   include sensu::resources
 
-  exec { &#39;sensu systemctl daemon-reload&#39;:
-    path        =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
-    command     =&gt; &#39;systemctl daemon-reload&#39;,
-    refreshonly =&gt; true,
-  }
 }</pre>
       </td>
     </tr>

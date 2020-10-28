@@ -197,9 +197,10 @@ This module provides the <code>sensu::backend_upgrade</code> bolt task as a way 
 If you wish to make changes to values such as <code>subscriptions</code>, <code>labels</code> or <code>annotations</code> after a host is added to Sensu this must be done
 via the Sensu Go API. To support this it&#39;s now required that agents have the ability to make API calls.</p>
 
-<p>In order to ensure agents can make API calls either via API or sensuctl the agent must be told about the admin password:</p>
+<p>In order to ensure agents can make API calls either via API or sensuctl the agent must be told about the admin password and API host:</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;sensu&#39;:
+  api_host                     =&gt; &#39;sensu-backend.example.com&#39;,
   agent_entity_config_password =&gt; &#39;supersecret&#39;,
 }
 class { &#39;sensu::agent&#39;:
@@ -430,7 +431,11 @@ sensu::agent_entity_config_password: supersecret
 
 <p>This module supports Windows Sensu Go agent via chocolatey beginning with version 5.12.0.</p>
 
-<pre class="code puppet"><code class="puppet">class { &#39;sensu::agent&#39;:
+<pre class="code puppet"><code class="puppet">class { &#39;sensu&#39;:
+  api_host                     =&gt; &#39;sensu-backend.example.com&#39;,
+  agent_entity_config_password =&gt; &#39;supersecret&#39;,
+}
+class { &#39;sensu::agent&#39;:
   backends      =&gt; [&#39;sensu-backend.example.com:8081&#39;],
   subscriptions =&gt; [&#39;windows&#39;],
 }
@@ -1276,6 +1281,8 @@ groups:
 </ul>
 
 <h2 id="limitations">Limitations</h2>
+
+<p>Changing <code>sensu::etc_dir</code> is only supported on systems using systemd.</p>
 
 <p>The type <code>sensu_user</code> does not at this time support <code>ensure =&gt; absent</code> due to a limitation with sensuctl, see <a href="https://github.com/sensu/sensu-go/issues/2540">sensu-go#2540</a>.</p>
 
