@@ -379,7 +379,7 @@ associated to <code>linux</code> and <code>apache-servers</code> subscriptions.<
 
 <p>The following example will manage the resources necessary to use <code>sensuctl</code>.</p>
 
-<pre class="code puppet"><code class="puppet">class { &#39;::sensu&#39;:
+<pre class="code puppet"><code class="puppet">class { &#39;sensu&#39;:
   api_host =&gt; &#39;sensu-backend.example.com&#39;,
   password =&gt; &#39;supersecret&#39;,
 }
@@ -390,7 +390,7 @@ include sensu::cli
 
 <p>For Windows the <code>install_source</code> parameter must be provided:</p>
 
-<pre class="code puppet"><code class="puppet">class { &#39;::sensu&#39;:
+<pre class="code puppet"><code class="puppet">class { &#39;sensu&#39;:
   api_host =&gt; &#39;sensu-backend.example.com&#39;,
   password =&gt; &#39;supersecret&#39;,
 }

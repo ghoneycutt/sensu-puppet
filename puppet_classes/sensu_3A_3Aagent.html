@@ -717,12 +717,7 @@ Defaults to <code>C:\ProgramData\sensu\log\sensu-agent.log</code></p>
 302
 303
 304
-305
-306
-307
-308
-309
-310</pre>
+305</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/agent.pp', line 76</span>
@@ -809,13 +804,8 @@ class sensu::agent (
       }
     }
   }
-  # Get first backend listed and use that address for API calls to configure
-  # sensu_agent_entity_config resources
-  $_backend = $config[&#39;backend-url&#39;][0]
-  $_backend_without_prefix = $_backend.regsubst(&#39;^(ws|wss)://&#39;, &#39;&#39;)
-  $_backend_host = split($_backend_without_prefix, /:/)[0]
   sensu_agent_entity_setup { &#39;puppet&#39;:
-    url      =&gt; &quot;${sensu::api_protocol}://${_backend_host}:${sensu::api_port}&quot;,
+    url      =&gt; $sensu::api_url,
     username =&gt; &#39;puppet-agent_entity_config&#39;,
     password =&gt; $sensu::_agent_entity_config_password,
   }
