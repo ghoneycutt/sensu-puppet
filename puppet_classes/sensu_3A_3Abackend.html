@@ -1196,7 +1196,8 @@ Do not define with postgresql_ssl_key_source</p>
 391
 392
 393
-394</pre>
+394
+395</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 125</span>
@@ -1455,6 +1456,7 @@ class sensu::backend (
 
   exec { &#39;sensu-backend init&#39;:
     path        =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
+    command     =&gt; &quot;sensu-backend init --config-file ${sensu::etc_dir}/backend.yml&quot;,
     environment =&gt; [
       &#39;SENSU_BACKEND_CLUSTER_ADMIN_USERNAME=admin&#39;,
       &quot;SENSU_BACKEND_CLUSTER_ADMIN_PASSWORD=${sensu::password}&quot;,
@@ -1463,7 +1465,7 @@ class sensu::backend (
     # sensu-backend init will exit with code 3 if already run
     # If exit code is 3, do not need to run sensu-backend init again
     # If exit is not 3, run sensu-backend init
-    unless      =&gt; &#39;sensu-backend init ; [ $? -eq 3 ] &amp;&amp; exit 0 || exit 1&#39;,
+    unless      =&gt; &quot;sensu-backend init --config-file ${sensu::etc_dir}/backend.yml ; [ \$? -eq 3 ] &amp;&amp; exit 0 || exit 1&quot;,
     require     =&gt; Sensu_api_validator[&#39;sensu&#39;],
     before      =&gt; [
       Sensu_user[&#39;admin&#39;],
