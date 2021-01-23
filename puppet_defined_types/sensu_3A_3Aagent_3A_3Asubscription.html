@@ -204,7 +204,9 @@
 45
 46
 47
-48</pre>
+48
+49
+50</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/agent/subscription.pp', line 15</span>
@@ -235,12 +237,14 @@ define sensu::agent::subscription (
     order  =&gt; $order,
   }
 
-  sensu_agent_entity_config { &quot;sensu::agent::subscription ${name}&quot;:
-    config    =&gt; &#39;subscriptions&#39;,
-    value     =&gt; $subscription,
-    entity    =&gt; $_entity,
-    namespace =&gt; $_namespace,
-    provider  =&gt; &#39;sensu_api&#39;,
+  if ! $sensu::agent::agent_managed_entity {
+    sensu_agent_entity_config { &quot;sensu::agent::subscription ${name}&quot;:
+      config    =&gt; &#39;subscriptions&#39;,
+      value     =&gt; $subscription,
+      entity    =&gt; $_entity,
+      namespace =&gt; $_namespace,
+      provider  =&gt; &#39;sensu_api&#39;,
+    }
   }
 }</pre>
       </td>

@@ -214,6 +214,8 @@ class { &#39;sensu::agent&#39;:
 <p>This module will still continue to write subscriptions and other agent configurations to <code>agent.yml</code> so that if an agent entity is deleted it can be recreated
 by restarting the <code>sensu-agent</code> service.</p>
 
+<p>Beginning with Sensu Go 6.2.0 you can go back to making <code>agent.yml</code> the authoritative source for an agent&#39;s config by setting <code>sensu::agent::agent_managed_entity</code> to <code>true</code>.</p>
+
 <h3 id="updating-this-module-from-3-x-to-4-x">Updating this module from 3.x to 4.x</h3>
 
 <p>Class parameter changes:</p>
@@ -475,6 +477,13 @@ class { &#39;sensu::agent&#39;:
 </code></pre>
 
 <h3 id="advanced-agent">Advanced agent</h3>
+
+<p>If you wish to have the <code>agent.yml</code> be authoritative for agent entity configs:</p>
+
+<pre class="code puppet"><code class="puppet">class { &#39;sensu::agent&#39;:
+  agent_managed_entity  =&gt; true,
+}
+</code></pre>
 
 <p>If you wish to change the <code>agent</code> password you must provide the new and old password.
 It is advisable to set <code>show_diff</code> to <code>false</code> to avoid exposing the agent password.</p>

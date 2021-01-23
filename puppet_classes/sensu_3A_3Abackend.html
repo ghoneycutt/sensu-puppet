@@ -916,6 +916,23 @@ Do not define with postgresql_ssl_key_source</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>postgresql_enable_round_robin</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>PostgreSQL enable round robin</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -927,8 +944,6 @@ Do not define with postgresql_ssl_key_source</p>
         <pre class="lines">
 
 
-125
-126
 127
 128
 129
@@ -1197,10 +1212,13 @@ Do not define with postgresql_ssl_key_source</p>
 392
 393
 394
-395</pre>
+395
+396
+397
+398</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 125</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 127</span>
 
 class sensu::backend (
   Optional[String] $version = undef,
@@ -1250,6 +1268,7 @@ class sensu::backend (
   Integer $postgresql_batch_buffer = 0,
   Integer $postgresql_batch_size = 1,
   Integer $postgresql_batch_workers = 20,
+  Boolean $postgresql_enable_round_robin = false,
 ) {
 
   if $license_source and $license_content {

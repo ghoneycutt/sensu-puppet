@@ -296,6 +296,23 @@ RedHat based default: <code>/etc/sysconfig/sensu-agent</code></p>
   
     <li>
       
+        <span class='name'>agent_managed_entity</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Manage agent entity using agent.yml rather than API</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>backends</span>
       
       
@@ -488,8 +505,6 @@ Defaults to <code>C:\ProgramData\sensu\log\sensu-agent.log</code></p>
         <pre class="lines">
 
 
-76
-77
 78
 79
 80
@@ -717,10 +732,15 @@ Defaults to <code>C:\ProgramData\sensu\log\sensu-agent.log</code></p>
 302
 303
 304
-305</pre>
+305
+306
+307
+308
+309
+310</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/agent.pp', line 76</span>
+        <pre class="code"><span class="info file"># File 'manifests/agent.pp', line 78</span>
 
 class sensu::agent (
   Optional[String] $version = undef,
@@ -734,6 +754,7 @@ class sensu::agent (
   Boolean $service_enable = true,
   Stdlib::Absolutepath $service_path = &#39;/usr/sbin/sensu-agent&#39;,
   Hash $config_hash = {},
+  Boolean $agent_managed_entity = false,
   Optional[Array[Sensu::Backend_URL]] $backends = undef,
   String[1] $entity_name = $facts[&#39;networking&#39;][&#39;fqdn&#39;],
   Optional[Array[String[1]]] $subscriptions = undef,
@@ -775,14 +796,15 @@ class sensu::agent (
     }
   }
   $default_config = {
-    &#39;backend-url&#39;   =&gt; $backend_urls,
-    &#39;name&#39;          =&gt; $entity_name,
-    &#39;subscriptions&#39; =&gt; $subscriptions,
-    &#39;annotations&#39;   =&gt; $annotations,
-    &#39;labels&#39;        =&gt; $labels,
-    &#39;namespace&#39;     =&gt; $namespace,
-    &#39;redact&#39;        =&gt; $redact,
-    &#39;password&#39;      =&gt; $sensu::agent_password,
+    &#39;backend-url&#39;          =&gt; $backend_urls,
+    &#39;name&#39;                 =&gt; $entity_name,
+    &#39;agent-managed-entity&#39; =&gt; $agent_managed_entity,
+    &#39;subscriptions&#39;        =&gt; $subscriptions,
+    &#39;annotations&#39;          =&gt; $annotations,
+    &#39;labels&#39;               =&gt; $labels,
+    &#39;namespace&#39;            =&gt; $namespace,
+    &#39;redact&#39;               =&gt; $redact,
+    &#39;password&#39;             =&gt; $sensu::agent_password,
   }
   $config = filter($default_config + $ssl_config + $config_hash) |$key, $value| { $value =~ NotUndef }
   if $config[&#39;subscriptions&#39;] {
@@ -805,9 +827,10 @@ class sensu::agent (
     }
   }
   sensu_agent_entity_setup { &#39;puppet&#39;:
-    url      =&gt; $sensu::api_url,
-    username =&gt; &#39;puppet-agent_entity_config&#39;,
-    password =&gt; $sensu::_agent_entity_config_password,
+    url                  =&gt; $sensu::api_url,
+    username             =&gt; &#39;puppet-agent_entity_config&#39;,
+    password             =&gt; $sensu::_agent_entity_config_password,
+    agent_managed_entity =&gt; $config[&#39;agent-managed-entity&#39;],
   }
 
   $_service_env_vars = $service_env_vars.map |$key,$value| {

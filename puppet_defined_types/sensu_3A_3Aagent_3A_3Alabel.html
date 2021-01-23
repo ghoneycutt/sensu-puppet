@@ -278,7 +278,10 @@
 76
 77
 78
-79</pre>
+79
+80
+81
+82</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/agent/label.pp', line 21</span>
@@ -314,17 +317,18 @@ define sensu::agent::label (
     }
   }
 
-  sensu_agent_entity_config { &quot;sensu::agent::label ${name}&quot;:
-    ensure    =&gt; $ensure,
-    config    =&gt; &#39;labels&#39;,
-    key       =&gt; $key,
-    value     =&gt; $value,
-    entity    =&gt; $_entity,
-    namespace =&gt; $_namespace,
-    provider  =&gt; &#39;sensu_api&#39;,
-    subscribe =&gt; File[&#39;sensu_agent_config&#39;],
+  if ! $sensu::agent::agent_managed_entity {
+    sensu_agent_entity_config { &quot;sensu::agent::label ${name}&quot;:
+      ensure    =&gt; $ensure,
+      config    =&gt; &#39;labels&#39;,
+      key       =&gt; $key,
+      value     =&gt; $value,
+      entity    =&gt; $_entity,
+      namespace =&gt; $_namespace,
+      provider  =&gt; &#39;sensu_api&#39;,
+      subscribe =&gt; File[&#39;sensu_agent_config&#39;],
+    }
   }
-
   if $redact {
     if $ensure == &#39;present&#39; {
       sensu::agent::config_entry { &quot;redact-label-${name}&quot;:
@@ -332,13 +336,15 @@ define sensu::agent::label (
         value =&gt; [$key],
       }
     }
-    sensu_agent_entity_config { &quot;sensu::agent::label redact ${name}&quot;:
-      ensure    =&gt; $ensure,
-      config    =&gt; &#39;redact&#39;,
-      value     =&gt; $key,
-      entity    =&gt; $_entity,
-      namespace =&gt; $_namespace,
-      provider  =&gt; &#39;sensu_api&#39;,
+    if ! $sensu::agent::agent_managed_entity {
+      sensu_agent_entity_config { &quot;sensu::agent::label redact ${name}&quot;:
+        ensure    =&gt; $ensure,
+        config    =&gt; &#39;redact&#39;,
+        value     =&gt; $key,
+        entity    =&gt; $_entity,
+        namespace =&gt; $_namespace,
+        provider  =&gt; &#39;sensu_api&#39;,
+      }
     }
   }
 }</pre>
