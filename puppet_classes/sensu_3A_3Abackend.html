@@ -6,7 +6,7 @@
 <title>
   Puppet Class: sensu::backend
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -1207,15 +1207,7 @@ Do not define with postgresql_ssl_key_source</p>
 387
 388
 389
-390
-391
-392
-393
-394
-395
-396
-397
-398</pre>
+390</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 127</span>
@@ -1330,14 +1322,6 @@ class sensu::backend (
   }
   if $include_agent_resources {
     include sensu::backend::agent_resources
-  }
-
-  # See https://docs.sensu.io/sensu-go/latest/installation/upgrade/
-  # Only necessary for Puppet &lt; 6.1.0,
-  # See https://github.com/puppetlabs/puppet/commit/f8d5c60ddb130c6429ff12736bfdb4ae669a9fd4
-  if versioncmp($facts[&#39;puppetversion&#39;],&#39;6.1.0&#39;) &lt; 0 and $facts[&#39;service_provider&#39;] == &#39;systemd&#39; {
-    Package[&#39;sensu-go-backend&#39;] ~&gt; Class[&#39;systemd::systemctl::daemon_reload&#39;]
-    Class[&#39;systemd::systemctl::daemon_reload&#39;] -&gt; Service[&#39;sensu-backend&#39;]
   }
 
   sensu_user { &#39;admin&#39;:

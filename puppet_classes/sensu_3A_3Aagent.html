@@ -6,7 +6,7 @@
 <title>
   Puppet Class: sensu::agent
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -729,15 +729,7 @@ Defaults to <code>C:\ProgramData\sensu\log\sensu-agent.log</code></p>
 299
 300
 301
-302
-303
-304
-305
-306
-307
-308
-309
-310</pre>
+302</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/agent.pp', line 78</span>
@@ -881,14 +873,6 @@ class sensu::agent (
   } else {
     $package_provider = undef
     $_package_source = undef
-  }
-
-  # See https://docs.sensu.io/sensu-go/latest/installation/upgrade/
-  # Only necessary for Puppet &lt; 6.1.0,
-  # See https://github.com/puppetlabs/puppet/commit/f8d5c60ddb130c6429ff12736bfdb4ae669a9fd4
-  if versioncmp($facts[&#39;puppetversion&#39;],&#39;6.1.0&#39;) &lt; 0 and $facts[&#39;service_provider&#39;] == &#39;systemd&#39; {
-    Package[&#39;sensu-go-agent&#39;] ~&gt; Class[&#39;systemd::systemctl::daemon_reload&#39;]
-    Class[&#39;systemd::systemctl::daemon_reload&#39;] -&gt; Service[&#39;sensu-agent&#39;]
   }
 
   package { &#39;sensu-go-agent&#39;:

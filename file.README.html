@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -62,61 +62,61 @@
 <h4 id="table-of-contents">Table of Contents</h4>
 
 <ol>
-<li><a href="#label-Module+description">Module Description</a>
+<li><a href="#module-description">Module Description</a>
 
 <ul>
-<li><a href="#label-Updating+this+module+from+4x+to+5x">Updating this module from 4.x to 5.x</a></li>
-<li><a href="#label-Updating+this+module+from+3x+to+4x">Updating this module from 3.x to 4.x</a></li>
+<li><a href="#updating-this-module-from-4x-to-5x">Updating this module from 4.x to 5.x</a></li>
+<li><a href="#updating-this-module-from-3x-to-4x">Updating this module from 3.x to 4.x</a></li>
 </ul></li>
-<li><a href="#label-Setup">Setup - The basics of getting started with Sensu</a>
+<li><a href="#setup">Setup - The basics of getting started with Sensu</a>
 
 <ul>
-<li><a href="#label-What+sensu+affects">What sensu affects</a></li>
-<li><a href="#label-Setup+requirements">Setup requirements</a></li>
-<li><a href="#label-Beginning+with+sensu">Beginning with Sensu</a></li>
+<li><a href="#what-sensu-affects">What sensu affects</a></li>
+<li><a href="#setup-requirements">Setup requirements</a></li>
+<li><a href="#beginning-with-sensu">Beginning with Sensu</a></li>
 </ul></li>
-<li><a href="#label-Usage">Usage - Configuration options and additional functionality</a>
+<li><a href="#usage">Usage - Configuration options and additional functionality</a>
 
 <ul>
-<li><a href="#label-Location+of+resources">Location of Resources</a></li>
-<li><a href="#label-Basic+sensu+backend">Basic Sensu backend</a></li>
-<li><a href="#label-Basic+sensu+agent">Basic Sensu agent</a></li>
-<li><a href="#label-Basic+sensu+cli">Basic Sensu CLI</a></li>
-<li><a href="#label-Api+providers">API Providers</a></li>
-<li><a href="#label-Manage+windows+agent">Manage Windows Agent</a></li>
-<li><a href="#label-Advanced+agent">Advanced agent</a></li>
-<li><a href="#label-Advanced+agent+++subscriptions">Advanced agent - Subscriptions</a></li>
-<li><a href="#label-Advanced+agent+++annotations+and+labels">Advanced agent - Annotations and Labels</a></li>
-<li><a href="#label-Advanced+agent+++custom+config+entries">Advanced agent - Custom config entries</a></li>
-<li><a href="#label-Advanced+ssl">Advanced SSL</a></li>
-<li><a href="#label-Enterprise+support">Enterprise support</a></li>
-<li><a href="#label-Contact+routing">Contact routing</a></li>
-<li><a href="#label-Postgresql+datastore+support">PostgreSQL datastore support</a></li>
-<li><a href="#label-Installing+plugins">Installing Plugins</a></li>
-<li><a href="#label-Installing+extensions">Installing Extensions</a></li>
-<li><a href="#label-Exported+resources">Exported resources</a></li>
-<li><a href="#label-Hiera+resources">Hiera resources</a></li>
-<li><a href="#label-Resource+purging">Resource purging</a></li>
-<li><a href="#label-Sensu+backend+cluster">Sensu backend cluster</a>
+<li><a href="#location-of-resources">Location of Resources</a></li>
+<li><a href="#basic-sensu-backend">Basic Sensu backend</a></li>
+<li><a href="#basic-sensu-agent">Basic Sensu agent</a></li>
+<li><a href="#basic-sensu-cli">Basic Sensu CLI</a></li>
+<li><a href="#api-providers">API Providers</a></li>
+<li><a href="#manage-windows-agent">Manage Windows Agent</a></li>
+<li><a href="#advanced-agent">Advanced agent</a></li>
+<li><a href="#advanced-agent---subscriptions">Advanced agent - Subscriptions</a></li>
+<li><a href="#advanced-agent---annotations-and-labels">Advanced agent - Annotations and Labels</a></li>
+<li><a href="#advanced-agent---custom-config-entries">Advanced agent - Custom config entries</a></li>
+<li><a href="#advanced-ssl">Advanced SSL</a></li>
+<li><a href="#enterprise-support">Enterprise support</a></li>
+<li><a href="#contact-routing">Contact routing</a></li>
+<li><a href="#postgresql-datastore-support">PostgreSQL datastore support</a></li>
+<li><a href="#installing-plugins">Installing Plugins</a></li>
+<li><a href="#installing-extensions">Installing Extensions</a></li>
+<li><a href="#exported-resources">Exported resources</a></li>
+<li><a href="#hiera-resources">Hiera resources</a></li>
+<li><a href="#resource-purging">Resource purging</a></li>
+<li><a href="#sensu-backend-cluster">Sensu backend cluster</a>
 
 <ul>
-<li><a href="#label-Adding+backend+members+to+an+existing+cluster">Adding backend members to an existing cluster</a></li>
+<li><a href="#adding-backend-members-to-an-existing-cluster">Adding backend members to an existing cluster</a></li>
 </ul></li>
-<li><a href="#label-Sensu+backend+federation">Sensu backend federation</a></li>
-<li><a href="#label-Large+environment+considerations">Large Environment Considerations</a></li>
-<li><a href="#label-Composite+names+for+namespaces">Composite Names for Namespaces</a></li>
-<li><a href="#label-Installing+bonsai+assets">Installing Bonsai Assets</a></li>
-<li><a href="#label-Bolt+tasks">Bolt Tasks</a></li>
+<li><a href="#sensu-backend-federation">Sensu backend federation</a></li>
+<li><a href="#large-environment-considerations">Large Environment Considerations</a></li>
+<li><a href="#composite-names-for-namespaces">Composite Names for Namespaces</a></li>
+<li><a href="#installing-bonsai-assets">Installing Bonsai Assets</a></li>
+<li><a href="#bolt-tasks">Bolt Tasks</a></li>
 </ul></li>
-<li><a href="#label-Reference">Reference</a>
+<li><a href="#reference">Reference</a>
 
 <ul>
-<li><a href="#label-Facts">Facts</a></li>
+<li><a href="#facts">Facts</a></li>
 </ul></li>
-<li><a href="#label-Examples">Examples</a></li>
-<li><a href="#label-Limitations">Limitations - OS compatibility, etc.</a></li>
-<li><a href="#label-Development">Development - Guide for contributing to the module</a></li>
-<li><a href="#label-License">License</a></li>
+<li><a href="#examples">Examples</a></li>
+<li><a href="#limitations">Limitations - OS compatibility, etc.</a></li>
+<li><a href="#development">Development - Guide for contributing to the module</a></li>
+<li><a href="#license">License</a></li>
 </ol>
 
 <h2 id="module-description">Module description</h2>
@@ -209,7 +209,7 @@ class { &#39;sensu::agent&#39;:
 }
 </code></pre>
 
-<p>See <a href="#label-Api+providers">API Providers</a> for example Hiera that can be used in a file like <code>common.yaml</code> to easily share the admin password with agents.</p>
+<p>See <a href="#api-providers">API Providers</a> for example Hiera that can be used in a file like <code>common.yaml</code> to easily share the admin password with agents.</p>
 
 <p>This module will still continue to write subscriptions and other agent configurations to <code>agent.yml</code> so that if an agent entity is deleted it can be recreated
 by restarting the <code>sensu-agent</code> service.</p>
@@ -291,7 +291,7 @@ by restarting the <code>sensu-agent</code> service.</p>
 <p>For systems using <code>apt</code>:</p>
 
 <ul>
-<li><a href="https://forge.puppet.com/puppetlabs/apt">puppetlabs/apt</a> module (<code>&gt;= 5.0.1 &lt; 8.0.0</code>)</li>
+<li><a href="https://forge.puppet.com/puppetlabs/apt">puppetlabs/apt</a> module (<code>&gt;= 5.0.1 &lt; 9.0.0</code>)</li>
 </ul>
 
 <p>For systems using <code>yum</code> and Puppet &gt;= 6.0.0:</p>
@@ -303,8 +303,8 @@ by restarting the <code>sensu-agent</code> service.</p>
 <p>For Windows:</p>
 
 <ul>
-<li><a href="https://forge.puppet.com/puppetlabs/chocolatey">puppetlabs/chocolatey</a> module (<code>&gt;= 3.0.0 &lt; 5.0.0</code>)</li>
-<li><a href="https://forge.puppet.com/puppet/windows_env">puppet/windows_env</a> module (<code>&gt;= 3.0.0 &lt; 4.0.0</code>)</li>
+<li><a href="https://forge.puppet.com/puppetlabs/chocolatey">puppetlabs/chocolatey</a> module (<code>&gt;= 3.0.0 &lt; 7.0.0</code>)</li>
+<li><a href="https://forge.puppet.com/puppet/windows_env">puppet/windows_env</a> module (<code>&gt;= 3.0.0 &lt; 5.0.0</code>)</li>
 <li><a href="https://forge.puppet.com/puppet/archive">puppet/archive</a> module (<code>&gt;= 3.0.0 &lt; 5.0.0</code>)</li>
 </ul>
 
@@ -516,7 +516,7 @@ class { &#39;sensu::agent&#39;:
 <li>redact</li>
 </ul>
 
-<p>Agent configurations can also be set via <code>sensu::agent::config_entry</code>. See <a href="#label-Advanced+agent+++custom+config+entries">Advanced agent - Custom config entries</a>.</p>
+<p>Agent configurations can also be set via <code>sensu::agent::config_entry</code>. See <a href="#advanced-agent---custom-config-entries">Advanced agent - Custom config entries</a>.</p>
 
 <h3 id="advanced-agent-subscriptions">Advanced agent - Subscriptions</h3>
 
@@ -946,7 +946,7 @@ The following example will only purge subscriptions:</p>
 }
 </code></pre>
 
-<p><strong>NOTE</strong>: The Puppet built-in <code>resources</code> can also be used for purging but you must ensure that resources that support namespaces are defined using composite names in the form of <code>$name in $namespace</code>. See <a href="#label-Composite+names+for+namespaces">Composite Names for Namespaces</a> for details on composite names.</p>
+<p><strong>NOTE</strong>: The Puppet built-in <code>resources</code> can also be used for purging but you must ensure that resources that support namespaces are defined using composite names in the form of <code>$name in $namespace</code>. See <a href="#composite-names-for-namespaces">Composite Names for Namespaces</a> for details on composite names.</p>
 
 <p>Using the Puppet built-in <code>resources</code> would look like this:</p>
 
@@ -1199,7 +1199,7 @@ Example: <code>bolt task run sensu::apikey action=delete key=replace-with-uuid-k
 
 <p>This module provides a plugin to populate Bolt v2 inventory targets.</p>
 
-<p>In order to use the <code>sensu</code> inventory plugin the host executing Bolt must have <code>sensuctl</code> configured, see <a href="#label-Basic+sensu+cli">Basic Sensu CLI</a>.</p>
+<p>In order to use the <code>sensu</code> inventory plugin the host executing Bolt must have <code>sensuctl</code> configured, see <a href="#basic-sensu-cli">Basic Sensu CLI</a>.</p>
 
 <p>Example of configuring the Bolt inventory with two groups. The <code>linux</code> group pulls Sensu Go entities in the <code>default</code> namespace with the <code>linux</code> subscription. The <code>linux-qa</code> group is the same as <code>linux</code> group but instead pulling entities from the <code>qa</code> namespace.</p>
 
@@ -1306,7 +1306,7 @@ groups:
 
 <h3 id="notes-regarding-support">Notes regarding support</h3>
 
-<p>This module is built for use with Puppet versions 5 and 6 and the ruby
+<p>This module is built for use with Puppet versions 6 and 7 and the ruby
 versions associated with those releases. See <code>.travis.yml</code> for an exact
 matrix of Puppet releases and ruby versions.</p>
 
@@ -1332,6 +1332,7 @@ Linux.</p>
 <li>Debian 10</li>
 <li>Ubuntu 16.04 LTS</li>
 <li>Ubuntu 18.04 LTS</li>
+<li>Ubuntu 20.04 LTS</li>
 <li>Amazon 2018.03</li>
 <li>Amazon 2</li>
 <li>Windows Server 2008 R2</li>
